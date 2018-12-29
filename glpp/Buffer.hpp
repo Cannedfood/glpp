@@ -89,8 +89,8 @@ public:
 	void bind(BufferType as = kBufferType) noexcept;
 	void unbind(BufferType as = kBufferType) noexcept;
 
-	void bindBase(GLuint index, BufferType as = kBufferType) noexcept;
-	void bindRange(GLuint index, size_t offset_bytes, size_t size_bytes, BufferType as = kBufferType) noexcept;
+	void bindBase(GLuint index, BufferType as = kBufferType) const noexcept;
+	void bindRange(GLuint index, size_t offset_bytes, size_t size_bytes, BufferType as = kBufferType) const noexcept;
 
 	void storage(BufferStorageBits flags, size_t bytes, void const* data = nullptr) noexcept;
 

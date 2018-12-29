@@ -54,11 +54,11 @@ void Buffer<type>::unbind(BufferType from) noexcept {
 }
 
 template<BufferType type> GLPP_DECL
-void Buffer<type>::bindBase(GLuint index, BufferType as) noexcept {
+void Buffer<type>::bindBase(GLuint index, BufferType as) const noexcept {
 	glBindBufferBase(as, index, mHandle);
 }
 template<BufferType type> GLPP_DECL
-void Buffer<type>::bindRange(GLuint index, size_t offset_bytes, size_t size_bytes, BufferType as) noexcept {
+void Buffer<type>::bindRange(GLuint index, size_t offset_bytes, size_t size_bytes, BufferType as) const noexcept {
 	glBindBufferRange(as, index, mHandle, offset_bytes, size_bytes);
 }
 
