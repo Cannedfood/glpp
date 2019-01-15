@@ -21,15 +21,19 @@ public:
 	Shader(ShaderType type) noexcept;
 	~Shader() noexcept;
 
-	Shader(Shader&& other) = delete;
+	Shader(Shader&& other) noexcept;
+	Shader& operator=(Shader&& other) noexcept;
 	Shader(Shader const& other) = delete;
-	Shader& operator=(Shader&& other) = delete;
 	Shader& operator=(Shader const& other) = delete;
 
+	void init(ShaderType type) noexcept;
+	void reset() noexcept;
+
 	// GLSL
-	Shader(ShaderType type, char    const* source, int len = -1);
+	Shader(ShaderType type, unsigned sourceCount, char const* const* sources, int const* lengths = nullptr);
+	Shader(ShaderType type, char const* source, int len = -1);
 	Shader(ShaderType type, std::string_view source);
-	void compileGLSL(char const* data, int size = -1) noexcept;
+	void compileGLSL(unsigned sourceCount, char const* const* sources, int const* lengths = nullptr) noexcept;
 
 	// Spirv
 	Shader(ShaderType type, uint8_t const* source, int len);

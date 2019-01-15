@@ -2,6 +2,7 @@
 
 #include <string>
 #include <stdexcept>
+#include <algorithm>
 
 #ifndef GLPP_DECL
 	#define GLPP_DECL
@@ -10,33 +11,63 @@
 namespace gl {
 
 GLPP_DECL
-Shader::Shader(ShaderType type) noexcept :
-	mHandle(glCreateShader(type))
+Shader::Shader(ShaderType type) noexcept
 {
-	// assert(mHandle);
+	init(type);
 }
 
 GLPP_DECL
 Shader::~Shader() noexcept {
-	glDeleteShader(mHandle);
+	reset();
 }
 
 GLPP_DECL
-Shader::Shader(ShaderType type, char const* source, int len) :
+void Shader::init(ShaderType type) noexcept {
+	reset();
+	mHandle = glCreateShader(type);
+}
+
+GLPP_DECL
+void Shader::reset() noexcept {
+	if(mHandle) {
+		glDeleteShader(mHandle);
+		mHandle = 0;
+	}
+}
+
+GLPP_DECL
+Shader::Shader(Shader&& other) noexcept :
+	mHandle(std::exchange(other.mHandle, 0))
+{}
+
+GLPP_DECL
+Shader& Shader::operator=(Shader&& other) noexcept {
+	reset();
+	mHandle = std::exchange(other.mHandle, 0);
+	return *this;
+}
+
+GLPP_DECL
+Shader::Shader(ShaderType type, unsigned sourceCount, char const* const* sources, int const* lengths) :
 	Shader(type)
 {
-	compileGLSL(source, len);
+	compileGLSL(sourceCount, sources, lengths);
 	if(!compileStatus()) {
 		throw std::runtime_error("Failed compiling shader:\n" + infoLog());
 	}
 }
+
+GLPP_DECL
+Shader::Shader(ShaderType type, char const* source, int len) :
+	Shader(type, 1, &source, &len)
+{}
 GLPP_DECL
 Shader::Shader(ShaderType type, std::string_view source) :
 	Shader(type, source.data(), source.size())
 {}
 GLPP_DECL
-void Shader::compileGLSL(char const* data, int size) noexcept {
-	glShaderSource(mHandle, 1, &data, size >= 0 ? &size : nullptr);
+void Shader::compileGLSL(unsigned sourceCount, char const* const* sources, int const* lengths) noexcept {
+	glShaderSource(mHandle, sourceCount, sources, lengths);
 	glCompileShader(mHandle);
 
 	// TODO: check status
