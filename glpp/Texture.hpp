@@ -95,6 +95,8 @@ enum CompareFunc {
 };
 
 enum ColorComponent {
+	ONE   = GL_ONE,
+	ZERO  = GL_ZERO,
 	RED   = GL_RED,
 	GREEN = GL_GREEN,
 	BLUE  = GL_BLUE,
