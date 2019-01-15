@@ -25,8 +25,8 @@ public:
 
 	Program(std::initializer_list<unsigned> shaders) noexcept;
 
-	void init();
-	void free();
+	void init() noexcept;
+	void reset() noexcept;
 
 	void hintBinaryRetrievable(bool b = true) noexcept;
 	void separable(bool b = true) noexcept;

@@ -1,5 +1,7 @@
 #include "Program.hpp"
 
+#include <algorithm>
+
 #ifndef GLPP_DECL
 	#define GLPP_DECL
 #endif
@@ -14,7 +16,7 @@ Program::Program() noexcept :
 }
 GLPP_DECL
 Program::~Program() noexcept {
-	free();
+	reset();
 }
 
 GLPP_DECL
@@ -30,18 +32,19 @@ Program::Program(Program&& other) noexcept :
 	other.mHandle = 0;
 }
 Program& Program::operator=(Program&& other) noexcept {
-	free();
-	std::swap(mHandle, other.mHandle);
+	reset();
+	mHandle = std::exchange(other.mHandle, 0);
 	return *this;
 }
 
 GLPP_DECL
-void Program::init() {
+void Program::init() noexcept {
+	reset();
 	mHandle = glCreateProgram();
 }
 
 GLPP_DECL
-void Program::free() {
+void Program::reset() noexcept {
 	if(mHandle) {
 		glDeleteProgram(mHandle);
 		mHandle = 0;
