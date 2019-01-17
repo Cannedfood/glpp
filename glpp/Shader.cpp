@@ -11,7 +11,7 @@
 namespace gl {
 
 GLPP_DECL
-Shader::Shader(ShaderType type) noexcept
+Shader::Shader(ShaderType type) noexcept : mHandle(0)
 {
 	init(type);
 }
