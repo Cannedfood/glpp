@@ -119,3 +119,9 @@ void debugFilter(
 }
 
 } // namespace gl
+
+#ifndef NDEBUG
+#define GLPP_DEBUG_SCOPE() ::gl::DebugGroup _glpp_debug_group(__PRETTY_FUNCTION__)
+#else
+#define GLPP_DEBUG_SCOPE()
+#endif
