@@ -5,6 +5,7 @@
 #include <GL/glew.h>
 
 #include <cstddef>
+#include <string_view>
 
 namespace gl {
 
@@ -176,6 +177,8 @@ public:
 	void wrapT(WrapMode) noexcept;
 	void wrapR(WrapMode) noexcept;
 	void wrap(WrapMode s, WrapMode t = CLAMP, WrapMode r = CLAMP) noexcept;
+
+	void debugLabel(std::string_view name) noexcept;
 
 	operator unsigned() noexcept { return mHandle; }
 };

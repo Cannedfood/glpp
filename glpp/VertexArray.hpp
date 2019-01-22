@@ -2,6 +2,7 @@
 
 #include <GL/glew.h>
 #include <cstddef>
+#include <string_view>
 
 #include "Enums.hpp"
 
@@ -38,6 +39,8 @@ public:
 		GLuint bufferBindingIndex,
 		unsigned buffer,
 		size_t stride = 0, size_t offset = 0) noexcept;
+
+	void debugLabel(std::string_view name) noexcept;
 };
 
 } // namespace gl

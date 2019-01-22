@@ -73,4 +73,9 @@ void VertexArray::bindBuffer(
 	glVertexArrayVertexBuffer(mHandle, bufferBindingIndex, buffer, offset, stride);
 }
 
+GLPP_DECL
+void VertexArray::debugLabel(std::string_view name) noexcept {
+	glObjectLabel(GL_VERTEX_ARRAY, mHandle, name.size(), name.data());
+}
+
 } // namespace gl

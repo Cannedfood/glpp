@@ -176,6 +176,11 @@ void Texture<type>::wrap(WrapMode s, WrapMode t, WrapMode r) noexcept {
 	wrapR(r);
 }
 
+template<TextureType type> GLPP_DECL
+void Texture<type>::debugLabel(std::string_view name) noexcept {
+	glObjectLabel(GL_TEXTURE, mHandle, name.size(), name.data());
+}
+
 template class Texture<TEXTURE_1D>;
 template class Texture<TEXTURE_2D>;
 template class Texture<TEXTURE_3D>;
