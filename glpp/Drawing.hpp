@@ -37,8 +37,20 @@ void drawBuffers(Topography topo) noexcept {
 }
 
 inline
-void drawElements(Topography topo, GLsizei count, BasicType indexType, size_t indexBufferOffset = 0) noexcept {
-	glDrawElements(topo, count, indexType, (void*)indexBufferOffset);
+void drawElements(Topography topo, BasicType indexType, size_t firstIndex, GLsizei count) noexcept {
+
+	switch(indexType) {
+		case BYTE:  case UNSIGNED_BYTE: break;
+		case SHORT: case UNSIGNED_SHORT: firstIndex *= sizeof(short); break;
+		case INT:   case UNSIGNED_INT: firstIndex *= sizeof(int); break;
+		default: fprintf(stderr, "Unsupported index type"); std::terminate(); break;
+	}
+	glDrawElements(topo, count, indexType, (void*)firstIndex);
+}
+
+inline
+void drawElements(Topography topo, BasicType indexType, GLsizei count) noexcept {
+	drawElements(topo, indexType, 0, count);
 }
 
 } // namespace gl
