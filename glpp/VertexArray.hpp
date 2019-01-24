@@ -38,7 +38,7 @@ public:
 	void bindBuffer(
 		GLuint bufferBindingIndex,
 		unsigned buffer,
-		size_t stride = 0, size_t offset = 0) noexcept;
+		size_t stride, size_t offset = 0) noexcept;
 
 	void debugLabel(std::string_view name) noexcept;
 };
