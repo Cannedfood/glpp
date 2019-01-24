@@ -4,6 +4,9 @@
 
 #include "Enums.hpp"
 
+#include <cstdio>
+#include <exception>
+
 namespace gl {
 
 enum Topography {
