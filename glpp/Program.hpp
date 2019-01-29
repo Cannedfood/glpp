@@ -2,6 +2,7 @@
 
 #include <initializer_list>
 #include <string>
+#include <stdexcept>
 
 #include <GL/glew.h>
 
@@ -9,6 +10,11 @@
 
 
 namespace gl {
+
+class ValidationError : public std::runtime_error {
+public:
+	using std::runtime_error::runtime_error;
+};
 
 // TODO: incomplete
 
@@ -39,10 +45,13 @@ public:
 	void detach(std::initializer_list<unsigned> shaders) noexcept;
 	bool link  (std::initializer_list<unsigned> shaders) noexcept;
 
-	void use() noexcept;
+	bool validate() const noexcept;
+	void assertValid() const;
+
+	void use() const noexcept;
 
 	// Uniforms and stuff
-	int uniformLocation(const char* name) noexcept;
+	int uniformLocation(const char* name) const noexcept;
 	void uniform(int at, float f) noexcept;
 	void uniform(int at, glm::vec2 const& v) noexcept;
 	void uniform(int at, glm::vec3 const& v) noexcept;

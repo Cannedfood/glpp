@@ -93,12 +93,23 @@ bool Program::link(std::initializer_list<unsigned> shaders) noexcept {
 }
 
 GLPP_DECL
-void Program::use() noexcept {
+bool Program::validate() const noexcept {
+	glValidateProgram(mHandle);
+	return validationStatus();
+}
+
+GLPP_DECL
+void Program::assertValid() const {
+	if(!validate()) throw ValidationError(infoLog());
+}
+
+GLPP_DECL
+void Program::use() const noexcept {
 	glUseProgram(mHandle);
 }
 
 GLPP_DECL
-int Program::uniformLocation(const char* name) noexcept {
+int Program::uniformLocation(const char* name) const noexcept {
 	return glGetUniformLocation(mHandle, name);
 }
 GLPP_DECL
