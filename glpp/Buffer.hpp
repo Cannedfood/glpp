@@ -100,8 +100,8 @@ public:
 	template<class T> void data(BufferUsage usage, size_t count, T const* pData) noexcept { data(usage, count * sizeof(T), (void const*)pData); }
 	template<class T> void subdata(size_t offset_index, size_t count, T const* pData) noexcept { data(offset_index * sizeof(T), count * sizeof(T), (void const*)pData); }
 
-	template<class ContainerT> void data(BufferUsage usage, ContainerT const& c) noexcept { data(usage, c.size(), c.data()); }
-	template<class ContainerT> void subdata(size_t offset_index, ContainerT const& c) noexcept { data(offset_index, c.size(), c.data()); }
+	template<class ContainerT> void data(BufferUsage usage, ContainerT const& c) noexcept { data(usage, std::size(c), std::data(c)); }
+	template<class ContainerT> void subdata(size_t offset_index, ContainerT const& c) noexcept { data(offset_index, std::size(c), std::data(c)); }
 
 	// TODO:
 	// glClearBuffer
