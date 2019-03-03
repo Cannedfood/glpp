@@ -39,11 +39,11 @@ public:
 
 	void attach(unsigned shader) noexcept;
 	void detach(unsigned shader) noexcept;
-	bool link() noexcept;
+	[[nodiscard]] bool link() noexcept;
 
 	void attach(std::initializer_list<unsigned> shaders) noexcept;
 	void detach(std::initializer_list<unsigned> shaders) noexcept;
-	bool link  (std::initializer_list<unsigned> shaders) noexcept;
+	[[nodiscard]] bool link  (std::initializer_list<unsigned> shaders) noexcept;
 
 	bool validate() const noexcept;
 	void assertValid() const;

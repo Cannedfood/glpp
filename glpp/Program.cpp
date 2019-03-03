@@ -23,7 +23,8 @@ GLPP_DECL
 Program::Program(std::initializer_list<unsigned> shaders) noexcept :
 	Program()
 {
-	link(shaders);
+	bool linking_succeeded = link(shaders);
+	assert(linking_succeeded);
 }
 
 Program::Program(Program&& other) noexcept :
