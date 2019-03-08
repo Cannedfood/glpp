@@ -21,6 +21,8 @@ enum FramebufferStatus {
 	FRAMEBUFFER_INCOMPLETE_LAYER_TARGETS      = GL_FRAMEBUFFER_INCOMPLETE_LAYER_TARGETS
 };
 
+std::string_view to_string(FramebufferStatus status) noexcept;
+
 enum FramebufferMode {
 	READ_FRAMEBUFFER = GL_READ_FRAMEBUFFER,
 	DRAW_FRAMEBUFFER = GL_DRAW_FRAMEBUFFER,
@@ -58,10 +60,11 @@ public:
 
 	void bind(FramebufferMode mode = gl::READ_WRITE_FRAMEBUFFER) noexcept;
 
-
 	FramebufferStatus checkStatus() const noexcept;
 
 	operator unsigned() noexcept { return mHandle; }
+
+	void debugLabel(std::string_view s) noexcept;
 };
 
 class Renderbuffer {
@@ -79,6 +82,8 @@ public:
 	void storage(unsigned samples, SizedImageFormat fmt, unsigned width, unsigned height) noexcept;
 
 	operator unsigned() noexcept { return mHandle; }
+
+	void debugLabel(std::string_view s) noexcept;
 };
 
 } // namespace gl
