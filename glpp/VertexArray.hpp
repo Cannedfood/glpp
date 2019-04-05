@@ -10,12 +10,14 @@ namespace gl {
 
 class VertexArray {
 	unsigned mHandle;
+	void gen() noexcept;
+	void destroy() noexcept;
 public:
 	VertexArray() noexcept;
 	~VertexArray() noexcept;
 
-	VertexArray(VertexArray&& other) noexcept                 = delete;
-	VertexArray& operator=(VertexArray&& other) noexcept      = delete;
+	VertexArray(VertexArray&& other) noexcept;
+	VertexArray& operator=(VertexArray&& other) noexcept;
 	VertexArray(VertexArray const& other) noexcept            = delete;
 	VertexArray& operator=(VertexArray const& other) noexcept = delete;
 

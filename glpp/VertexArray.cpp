@@ -4,18 +4,42 @@
 	#define GLPP_DECL
 #endif
 
+#include <utility>
+
 namespace gl {
 
 GLPP_DECL
-VertexArray::VertexArray() noexcept {
-	glGenVertexArrays(1, &mHandle);
-	bind();
-	unbind();
+VertexArray::VertexArray() noexcept :
+	mHandle(0)
+{
+	gen();
 }
 
 GLPP_DECL
 VertexArray::~VertexArray() noexcept {
-	glDeleteVertexArrays(1, &mHandle);
+	destroy();
+}
+
+void VertexArray::gen() noexcept {
+	destroy();
+	glGenVertexArrays(1, &mHandle);
+	bind();
+	unbind();
+}
+void VertexArray::destroy() noexcept {
+	if(mHandle) {
+		glDeleteVertexArrays(1, &mHandle);
+		mHandle = 0;
+	}
+}
+
+VertexArray::VertexArray(VertexArray&& other) noexcept :
+	mHandle(std::exchange(other.mHandle, 0))
+{}
+VertexArray& VertexArray::operator=(VertexArray&& other) noexcept {
+	destroy();
+	mHandle = std::exchange(other.mHandle, 0);
+	return *this;
 }
 
 GLPP_DECL
