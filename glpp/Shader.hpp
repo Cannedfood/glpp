@@ -15,6 +15,8 @@ enum ShaderType : GLenum {
 	TESS_EVALUATION_SHADER = GL_TESS_EVALUATION_SHADER
 };
 
+/// A single stage of a shader Program.
+/// Needs to be linked into a Program, after which it can be destroyed.
 class Shader {
 	unsigned mHandle;
 public:
@@ -33,6 +35,7 @@ public:
 	Shader(ShaderType type, unsigned sourceCount, char const* const* sources, int const* lengths = nullptr);
 	Shader(ShaderType type, char const* source, int len = -1);
 	Shader(ShaderType type, std::string_view source);
+	Shader(ShaderType type, std::initializer_list<std::string_view> sources);
 	void compileGLSL(unsigned sourceCount, char const* const* sources, int const* lengths = nullptr) noexcept;
 
 	// Spirv
@@ -65,6 +68,7 @@ public:
 	// GLSL
 	explicit inline SomeShader(char    const* source, int len = -1) noexcept : Shader(kShaderType, source, len) {}
 	explicit inline SomeShader(std::string_view source) noexcept : Shader(kShaderType, source) {}
+	explicit inline SomeShader(std::initializer_list<std::string_view> sources) noexcept : Shader(kShaderType, sources) {}
 	// Spirv
 	explicit inline SomeShader(uint8_t const* source, int len) noexcept : Shader(kShaderType, source, len) {}
 };

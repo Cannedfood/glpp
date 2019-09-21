@@ -69,7 +69,7 @@ void mainLoop(GLFWwindow* window) {
 		shader3d.uniform("uViewProjection", glm::perspectiveFov(glm::radians(60.f), (float) windowWidth, (float) windowHeight, .1f, 100.f));
 		shader3d.uniform("uModel", glm::translate(glm::vec3(0, 0, -3)) * glm::rotate((float)now(), glm::vec3(0, 1, 0)));
 
-		drawElements(TRIANGLES, meshdata.indices.size(), UINT16);
+		drawElements(TRIANGLES, UINT16, meshdata.indices.size());
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();

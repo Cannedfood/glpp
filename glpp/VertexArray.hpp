@@ -8,6 +8,7 @@
 
 namespace gl {
 
+/// Combines vertex and index buffers as well as the attribute layout in them into an easily bindable thing
 class VertexArray {
 	unsigned mHandle;
 	void gen() noexcept;

@@ -66,6 +66,23 @@ Shader::Shader(ShaderType type, std::string_view source) :
 	Shader(type, source.data(), source.size())
 {}
 GLPP_DECL
+Shader::Shader(ShaderType type, std::initializer_list<std::string_view> sources) :
+	Shader(type)
+{
+	std::vector<const char*> strns;
+	std::vector<int>         lengths;
+	strns.reserve(sources.size());
+	lengths.reserve(sources.size());
+	for(auto& src : sources) {
+		strns.push_back(src.data());
+		lengths.push_back(src.size());
+	}
+	compileGLSL(sources.size(), strns.data(), lengths.data());
+	if(!compileStatus()) {
+		throw std::runtime_error("Failed compiling shader:\n" + infoLog());
+	}
+}
+GLPP_DECL
 void Shader::compileGLSL(unsigned sourceCount, char const* const* sources, int const* lengths) noexcept {
 	glShaderSource(mHandle, sourceCount, sources, lengths);
 	glCompileShader(mHandle);

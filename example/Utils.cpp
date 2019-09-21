@@ -3,6 +3,9 @@
 #include "thirdparty/tiny_obj_loader.h"
 #include "thirdparty/stb_image.h"
 
+#include <memory.h>
+
+
 void Mesh::load(const char* path) {
 	using namespace tinyobj;
 
