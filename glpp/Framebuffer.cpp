@@ -19,6 +19,7 @@ std::string_view to_string(FramebufferStatus status) noexcept {
 		case FRAMEBUFFER_INCOMPLETE_MULTISAMPLE:        return "Incomplete: multisample";
 		case FRAMEBUFFER_INCOMPLETE_LAYER_TARGETS:      return "Incomplete: layer targets";
 	}
+	return "Unkown enum ?????";
 }
 
 // =============================================================
