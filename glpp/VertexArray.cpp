@@ -75,11 +75,14 @@ void VertexArray::bindAttribute(
 	bool normalize) noexcept
 {
 	switch(type) {
+		case INT8: case INT16: case INT32: case UINT8: case UINT16: case UINT32:
+			if(normalize) [[fallthrough]];
+			else {
+				glVertexArrayAttribIFormat(mHandle, attribIndex, componentCount, type, relativeOffset);
+				break;
+			}
 		case FLOAT16: case FLOAT32:
 			glVertexArrayAttribFormat(mHandle, attribIndex, componentCount, type, normalize ? GL_TRUE : GL_FALSE, relativeOffset);
-			break;
-		case INT8: case INT16: case INT32: case UINT8: case UINT16: case UINT32:
-			glVertexArrayAttribIFormat(mHandle, attribIndex, componentCount, type, relativeOffset);
 			break;
 		case FLOAT64:
 			glVertexArrayAttribLFormat(mHandle, attribIndex, componentCount, type, relativeOffset);
