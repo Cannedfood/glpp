@@ -2,6 +2,13 @@
 
 #include <GL/glew.h>
 
+#ifndef GLPP_NO_INLINE
+
+	#define GLPP_INLINE
+	#define GLPP_DECL inline
+
+#endif
+
 #include "glpp/Buffer.hpp"
 #include "glpp/Debug.hpp"
 #include "glpp/Drawing.hpp"
@@ -18,8 +25,6 @@
 
 #ifndef GLPP_NO_INLINE
 
-	#define GLPP_INLINE
-	#define GLPP_DECL inline
 	#include "glpp/Buffer.cpp"
 	#include "glpp/Framebuffer.cpp"
 	#include "glpp/Program.cpp"
