@@ -118,22 +118,22 @@ enum CubemapFace {
 };
 
 template<TextureType tType>
-class Texture {
+class BasicTexture {
 	unsigned mHandle;
 public:
 	constexpr inline static const
 	TextureType type = tType;
 
-	Texture() noexcept;
-	~Texture() noexcept;
+	BasicTexture() noexcept;
+	~BasicTexture() noexcept;
 
-	Texture(Texture&& other) noexcept;
-	Texture& operator=(Texture&& other) noexcept;
-	Texture(Texture const& other) noexcept            = delete;
-	Texture& operator=(Texture const& other) noexcept = delete;
+	BasicTexture(BasicTexture&& other) noexcept;
+	BasicTexture& operator=(BasicTexture&& other) noexcept;
+	BasicTexture(BasicTexture const& other) noexcept            = delete;
+	BasicTexture& operator=(BasicTexture const& other) noexcept = delete;
 	// TODO: incomplete
 
-	Texture(std::nullptr_t) noexcept;
+	BasicTexture(std::nullptr_t) noexcept;
 	void init() noexcept;
 	void reset() noexcept;
 
@@ -189,20 +189,20 @@ public:
 
 inline namespace texture_types {
 
-using Texture1D                 = Texture<TEXTURE_1D>;
-using Texture1DArray            = Texture<TEXTURE_1D_ARRAY>;
+using Texture1D                 = BasicTexture<TEXTURE_1D>;
+using Texture1DArray            = BasicTexture<TEXTURE_1D_ARRAY>;
 
-using Texture2D                 = Texture<TEXTURE_2D>;
-using Texture2DArray            = Texture<TEXTURE_2D_ARRAY>;
-using Texture2DMultisample      = Texture<TEXTURE_2D_MULTISAMPLE>;
-using Texture2DMultisampleArray = Texture<TEXTURE_2D_MULTISAMPLE_ARRAY>;
+using Texture2D                 = BasicTexture<TEXTURE_2D>;
+using Texture2DArray            = BasicTexture<TEXTURE_2D_ARRAY>;
+using Texture2DMultisample      = BasicTexture<TEXTURE_2D_MULTISAMPLE>;
+using Texture2DMultisampleArray = BasicTexture<TEXTURE_2D_MULTISAMPLE_ARRAY>;
 
-using Texture3D                 = Texture<TEXTURE_3D>;
+using Texture3D                 = BasicTexture<TEXTURE_3D>;
 
-using TextureRectangle          = Texture<TEXTURE_RECTANGLE>;
+using TextureRectangle          = BasicTexture<TEXTURE_RECTANGLE>;
 
-using TextureCubemap            = Texture<TEXTURE_CUBE_MAP>;
-using TextureCubemapArray       = Texture<TEXTURE_CUBE_MAP_ARRAY>;
+using TextureCubemap            = BasicTexture<TEXTURE_CUBE_MAP>;
+using TextureCubemapArray       = BasicTexture<TEXTURE_CUBE_MAP_ARRAY>;
 
 // using TextureBuffer             = Texture<TEXTURE_BUFFER>; TODO: buffer textures
 
