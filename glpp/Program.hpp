@@ -8,7 +8,6 @@
 
 #include <glm/fwd.hpp>
 
-
 namespace gl {
 
 class ValidationError : public std::runtime_error {
@@ -65,6 +64,7 @@ public:
 	void uniform(int at, glm::vec3 const& v) noexcept;
 	void uniform(int at, glm::vec4 const& v) noexcept;
 	void uniform(int at, glm::mat3x3 const& m) noexcept;
+	void uniform(int at, glm::mat4x3 const& m) noexcept;
 	void uniform(int at, glm::mat4x4 const& m) noexcept;
 
 	template<class Arg0, class... Args>
