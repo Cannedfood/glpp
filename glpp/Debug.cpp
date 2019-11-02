@@ -54,10 +54,12 @@ void debugFilter(bool allow, DebugSource source, DebugType type, DebugSeverity s
 }
 
 // Enable type
+GLPP_DECL
 void debugFilter(bool allow, DebugType type, DebugSource source) noexcept {
 	debugFilter(allow, source, type, SEVERITY_DONT_CARE, nullptr, 0);
 }
 // Enable severity
+GLPP_DECL
 void debugFilter(bool allow, DebugSeverity severity, DebugSource source, DebugType type) noexcept {
 	debugFilter(allow, source, type, severity, nullptr, 0);
 }

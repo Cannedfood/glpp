@@ -20,18 +20,21 @@ Program::~Program() noexcept {
 }
 
 GLPP_DECL
-Program::Program(std::initializer_list<unsigned> shaders) noexcept :
+Program::Program(std::initializer_list<unsigned> shaders) :
 	Program()
 {
-	bool linking_succeeded = link(shaders);
-	assert(linking_succeeded);
+	(void) link(shaders);
+	assertLinked();
+	assertValid();
 }
 
+GLPP_DECL
 Program::Program(Program&& other) noexcept :
 	mHandle(other.mHandle)
 {
 	other.mHandle = 0;
 }
+GLPP_DECL
 Program& Program::operator=(Program&& other) noexcept {
 	reset();
 	mHandle = std::exchange(other.mHandle, 0);
@@ -62,19 +65,9 @@ void Program::separable(bool b) noexcept {
 }
 
 GLPP_DECL
-void Program::attach(unsigned shader) noexcept {
-	glAttachShader(mHandle, shader);
-}
+void Program::attach(unsigned shader) noexcept { glAttachShader(mHandle, shader); }
 GLPP_DECL
-void Program::detach(unsigned shader) noexcept {
-	glDetachShader(mHandle, shader);
-}
-GLPP_DECL
-bool Program::link() noexcept {
-	glLinkProgram(mHandle);
-	return linkStatus();
-}
-
+void Program::detach(unsigned shader) noexcept { glDetachShader(mHandle, shader); }
 GLPP_DECL
 void Program::attach(std::initializer_list<unsigned> shaders) noexcept {
 	for(auto& shader : shaders)
@@ -86,11 +79,22 @@ void Program::detach(std::initializer_list<unsigned> shaders) noexcept {
 		glDetachShader(mHandle, shader);
 }
 GLPP_DECL
+bool Program::link() noexcept {
+	glLinkProgram(mHandle);
+	return linkStatus();
+}
+GLPP_DECL
 bool Program::link(std::initializer_list<unsigned> shaders) noexcept {
 	attach(shaders);
 	bool success = link();
 	detach(shaders);
 	return success;
+}
+GLPP_DECL
+void Program::assertLinked() const {
+	if(!linkStatus()) {
+		throw LinkerError("Failed linking shader program: " + infoLog());
+	}
 }
 
 GLPP_DECL
@@ -181,7 +185,7 @@ GLPP_DECL
 std::string Program::infoLog() const noexcept {
 	std::string result(infoLogLength(), ' ');
 	GLint len;
-	glGetShaderInfoLog(mHandle, result.size(), &len, result.data());
+	glGetProgramInfoLog(mHandle, result.size(), &len, result.data());
 	result.resize(len);
 	return result;
 }

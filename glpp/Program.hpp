@@ -12,8 +12,15 @@
 namespace gl {
 
 class ValidationError : public std::runtime_error {
-public:
-	using std::runtime_error::runtime_error;
+public: using std::runtime_error::runtime_error;
+};
+
+class LinkerError : public std::runtime_error {
+public: using std::runtime_error::runtime_error;
+};
+
+class CompilerError : public std::runtime_error {
+public: using std::runtime_error::runtime_error;
 };
 
 // TODO: incomplete
@@ -29,7 +36,7 @@ public:
 	Program(Program const& other) = delete;
 	Program& operator=(Program const& other) = delete;
 
-	Program(std::initializer_list<unsigned> shaders) noexcept;
+	Program(std::initializer_list<unsigned> shaders);
 
 	void init() noexcept;
 	void reset() noexcept;
@@ -40,6 +47,7 @@ public:
 	void attach(unsigned shader) noexcept;
 	void detach(unsigned shader) noexcept;
 	[[nodiscard]] bool link() noexcept;
+	void assertLinked() const;
 
 	void attach(std::initializer_list<unsigned> shaders) noexcept;
 	void detach(std::initializer_list<unsigned> shaders) noexcept;

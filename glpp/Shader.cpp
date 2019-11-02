@@ -144,7 +144,7 @@ size_t Shader::sourceLength() noexcept {
 }
 GLPP_DECL
 std::string Shader::source() noexcept {
-	std::string result(infoLogLength(), ' ');
+	std::string result(sourceLength(), ' ');
 	GLint len;
 	glGetShaderSource(mHandle, result.size(), &len, result.data());
 	result.resize(len);

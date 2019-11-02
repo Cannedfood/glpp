@@ -20,12 +20,14 @@ VertexArray::~VertexArray() noexcept {
 	destroy();
 }
 
+GLPP_DECL
 void VertexArray::gen() noexcept {
 	destroy();
 	glGenVertexArrays(1, &mHandle);
 	bind();
 	unbind();
 }
+GLPP_DECL
 void VertexArray::destroy() noexcept {
 	if(mHandle) {
 		glDeleteVertexArrays(1, &mHandle);
@@ -33,9 +35,11 @@ void VertexArray::destroy() noexcept {
 	}
 }
 
+GLPP_DECL
 VertexArray::VertexArray(VertexArray&& other) noexcept :
 	mHandle(std::exchange(other.mHandle, 0))
 {}
+GLPP_DECL
 VertexArray& VertexArray::operator=(VertexArray&& other) noexcept {
 	destroy();
 	mHandle = std::exchange(other.mHandle, 0);
