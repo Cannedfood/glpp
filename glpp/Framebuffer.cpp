@@ -58,6 +58,11 @@ void Framebuffer::bind(FramebufferMode mode) noexcept {
 }
 
 GLPP_DECL
+void Framebuffer::unbind(FramebufferMode mode) noexcept {
+	glBindFramebuffer(mode, 0);
+}
+
+GLPP_DECL
 FramebufferStatus Framebuffer::checkStatus() const noexcept {
 	return (FramebufferStatus) glCheckNamedFramebufferStatus(mHandle, GL_FRAMEBUFFER);
 }

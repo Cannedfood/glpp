@@ -59,6 +59,7 @@ public:
 	void renderbuffer(AttachmentType type, unsigned renderbuffer) noexcept;
 
 	void bind(FramebufferMode mode = gl::READ_WRITE_FRAMEBUFFER) noexcept;
+	void unbind(FramebufferMode mode = gl::READ_WRITE_FRAMEBUFFER) noexcept;
 
 	FramebufferStatus checkStatus() const noexcept;
 
