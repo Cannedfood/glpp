@@ -44,7 +44,7 @@ enum AttachmentType {
 };
 
 class Framebuffer {
-	unsigned mHandle;
+	unsigned mHandle = 0;
 public:
 	Framebuffer() noexcept;
 	~Framebuffer() noexcept;
@@ -69,14 +69,17 @@ public:
 };
 
 class Renderbuffer {
-	unsigned mHandle;
+	unsigned mHandle = 0;
 public:
 	Renderbuffer() noexcept;
 	~Renderbuffer() noexcept;
 
-	Renderbuffer(Renderbuffer&& other) = delete;
+	Renderbuffer(SizedImageFormat fmt, unsigned width, unsigned height) noexcept;
+	Renderbuffer(unsigned samples, SizedImageFormat fmt, unsigned width, unsigned height) noexcept;
+
+	Renderbuffer(Renderbuffer&& other) noexcept;
+	Renderbuffer& operator=(Renderbuffer&& other) noexcept;
 	Renderbuffer(Renderbuffer const& other) = delete;
-	Renderbuffer& operator=(Renderbuffer&& other) = delete;
 	Renderbuffer& operator=(Renderbuffer const& other) = delete;
 
 	void storage(SizedImageFormat fmt, unsigned width, unsigned height) noexcept;

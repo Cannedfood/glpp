@@ -1,5 +1,7 @@
 #include "Framebuffer.hpp"
 
+#include <utility>
+
 namespace gl {
 
 // =============================================================
@@ -79,11 +81,41 @@ void Framebuffer::debugLabel(std::string_view s) noexcept {
 GLPP_DECL
 Renderbuffer::Renderbuffer() noexcept {
 	glGenRenderbuffers(1, &mHandle);
+	glBindRenderbuffer(GL_RENDERBUFFER, mHandle);
+	glBindRenderbuffer(GL_RENDERBUFFER, 0);
 }
 GLPP_DECL
 Renderbuffer::~Renderbuffer() noexcept {
-	if(mHandle)
+	if(mHandle) {
 		glDeleteRenderbuffers(1, &mHandle);
+	}
+}
+
+GLPP_DECL
+Renderbuffer::Renderbuffer(SizedImageFormat fmt, unsigned width, unsigned height) noexcept :
+	Renderbuffer()
+{
+	storage(fmt, width, height);
+}
+GLPP_DECL
+Renderbuffer::Renderbuffer(unsigned samples, SizedImageFormat fmt, unsigned width, unsigned height) noexcept :
+	Renderbuffer()
+{
+	storage(samples, fmt, width, height);
+}
+
+GLPP_DECL
+Renderbuffer::Renderbuffer(Renderbuffer&& other) noexcept :
+	mHandle(std::exchange(other.mHandle, 0))
+{}
+
+GLPP_DECL
+Renderbuffer& Renderbuffer::operator=(Renderbuffer&& other) noexcept {
+	if(mHandle) {
+		glDeleteRenderbuffers(1, &mHandle);
+	}
+	mHandle = std::exchange(other.mHandle, 0);
+	return *this;
 }
 
 GLPP_DECL
