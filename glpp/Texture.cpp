@@ -134,19 +134,19 @@ void BasicTexture<type>::lodBias(float value) noexcept {
 }
 template<TextureType type> GLPP_DECL
 void BasicTexture<type>::minFilter(Filter filter) noexcept {
-	glTextureParameterf(mHandle, GL_TEXTURE_MIN_FILTER, filter);
+	glTextureParameteri(mHandle, GL_TEXTURE_MIN_FILTER, filter);
 }
 template<TextureType type> GLPP_DECL
 void BasicTexture<type>::magFilter(Filter filter) noexcept {
-	glTextureParameterf(mHandle, GL_TEXTURE_MAG_FILTER, filter);
+	glTextureParameteri(mHandle, GL_TEXTURE_MAG_FILTER, filter);
 }
 template<TextureType type> GLPP_DECL
 void BasicTexture<type>::minLod(float level) noexcept {
-	glTextureParameterf(mHandle, GL_TEXTURE_MIN_LOD, level);
+	glTextureParameteri(mHandle, GL_TEXTURE_MIN_LOD, level);
 }
 template<TextureType type> GLPP_DECL
 void BasicTexture<type>::maxLod(float level) noexcept {
-	glTextureParameterf(mHandle, GL_TEXTURE_MAX_LOD, level);
+	glTextureParameteri(mHandle, GL_TEXTURE_MAX_LOD, level);
 }
 template<TextureType type> GLPP_DECL
 void BasicTexture<type>::maxLevel(unsigned level) noexcept {
@@ -159,15 +159,15 @@ void BasicTexture<type>::swizzle(ColorComponent r, ColorComponent g, ColorCompon
 }
 template<TextureType type> GLPP_DECL
 void BasicTexture<type>::wrapS(WrapMode wrap) noexcept {
-	glTextureParameterf(mHandle, GL_TEXTURE_WRAP_S, wrap);
+	glTextureParameteri(mHandle, GL_TEXTURE_WRAP_S, wrap);
 }
 template<TextureType type> GLPP_DECL
 void BasicTexture<type>::wrapT(WrapMode wrap) noexcept {
-	glTextureParameterf(mHandle, GL_TEXTURE_WRAP_T, wrap);
+	glTextureParameteri(mHandle, GL_TEXTURE_WRAP_T, wrap);
 }
 template<TextureType type> GLPP_DECL
 void BasicTexture<type>::wrapR(WrapMode wrap) noexcept {
-	glTextureParameterf(mHandle, GL_TEXTURE_WRAP_R, wrap);
+	glTextureParameteri(mHandle, GL_TEXTURE_WRAP_R, wrap);
 }
 template<TextureType type> GLPP_DECL
 void BasicTexture<type>::wrap(WrapMode s, WrapMode t, WrapMode r) noexcept {
