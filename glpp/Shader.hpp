@@ -66,9 +66,9 @@ class SomeShader : public Shader {
 public:
 	inline SomeShader() noexcept : Shader(kShaderType) {}
 	// GLSL
-	explicit inline SomeShader(char    const* source, int len = -1) noexcept : Shader(kShaderType, source, len) {}
-	explicit inline SomeShader(std::string_view source) noexcept : Shader(kShaderType, source) {}
-	explicit inline SomeShader(std::initializer_list<std::string_view> sources) noexcept : Shader(kShaderType, sources) {}
+	explicit inline SomeShader(char    const* source, int len = -1) : Shader(kShaderType, source, len) {}
+	explicit inline SomeShader(std::string_view source) : Shader(kShaderType, source) {}
+	explicit inline SomeShader(std::initializer_list<std::string_view> sources) : Shader(kShaderType, sources) {}
 	// Spirv
 	explicit inline SomeShader(uint8_t const* source, int len) noexcept : Shader(kShaderType, source, len) {}
 };

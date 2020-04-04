@@ -3,6 +3,7 @@
 #include <string>
 #include <stdexcept>
 #include <algorithm>
+#include <vector>
 
 #ifndef GLPP_DECL
 	#define GLPP_DECL
