@@ -4,9 +4,7 @@
 
 #include "Texture.hpp"
 
-#ifndef GLPP_DECL
-	#define GLPP_DECL
-#endif
+#include <string_view>
 
 namespace gl {
 
@@ -49,9 +47,9 @@ public:
 	Framebuffer() noexcept;
 	~Framebuffer() noexcept;
 
-	Framebuffer(Framebuffer&& other) = delete;
-	Framebuffer(Framebuffer const& other) = delete;
-	Framebuffer& operator=(Framebuffer&& other) = delete;
+	Framebuffer(Framebuffer&& other) noexcept;
+	Framebuffer& operator=(Framebuffer&& other) noexcept;
+	Framebuffer(Framebuffer const& other) noexcept = delete;
 	Framebuffer& operator=(Framebuffer const& other) = delete;
 
 	void texture(AttachmentType type, unsigned tex, unsigned level = 0) noexcept;

@@ -2,6 +2,10 @@
 
 #include <utility>
 
+#ifndef GLPP_DECL
+	#define GLPP_DECL
+#endif
+
 namespace gl {
 
 // =============================================================
@@ -39,6 +43,20 @@ Framebuffer::~Framebuffer() noexcept {
 	if(mHandle) {
 		glDeleteFramebuffers(1, &mHandle);
 	}
+}
+
+GLPP_DECL
+Framebuffer::Framebuffer(Framebuffer&& other) noexcept :
+	mHandle(std::exchange(other.mHandle, 0))
+{}
+
+GLPP_DECL
+Framebuffer& Framebuffer::operator=(Framebuffer&& other) noexcept {
+	if(mHandle) {
+		glDeleteFramebuffers(1, &mHandle);
+	}
+	mHandle = std::exchange(other.mHandle, 0);
+	return *this;
 }
 
 GLPP_DECL
