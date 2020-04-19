@@ -57,6 +57,39 @@ void BasicTexture<type>::activate(unsigned index, TextureType as) noexcept {
 	glActiveTexture(GL_TEXTURE0 + index);
 	bind(as);
 }
+template<TextureType type> GLPP_DECL
+void BasicTexture<type>::texImage(
+	GLint level,
+	SizedImageFormat internalFormat,
+	GLsizei w,
+	gl::UnsizedImageFormat fmt, gl::BasicType dataType,
+	const void* data)
+{
+	glBindTexture(type, *this);
+	glTexImage1D(type, level, internalFormat, w, 0, fmt, dataType, data);
+}
+template<TextureType type> GLPP_DECL
+void BasicTexture<type>::texImage(
+	GLint level,
+	SizedImageFormat internalFormat,
+	GLsizei w, GLsizei h,
+	gl::UnsizedImageFormat fmt, gl::BasicType dataType,
+	const void* data)
+{
+	glBindTexture(type, *this);
+	glTexImage2D(type, level, internalFormat, w, h, 0, fmt, dataType, data);
+}
+template<TextureType type> GLPP_DECL
+void BasicTexture<type>::texImage(
+	GLint level,
+	SizedImageFormat internalFormat,
+	GLsizei w, GLsizei h, GLsizei d,
+	gl::UnsizedImageFormat fmt, gl::BasicType dataType,
+	const void* data)
+{
+	glBindTexture(type, *this);
+	glTexImage2D(type, level, internalFormat, w, h, 0, fmt, dataType, data);
+}
 
 template<TextureType type> GLPP_DECL
 void BasicTexture<type>::texSubimage(

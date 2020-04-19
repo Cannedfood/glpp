@@ -67,7 +67,8 @@ enum UnsizedImageFormat {
 	RGB  = GL_RGB,
 	RGBA = GL_RGBA,
 	BGR  = GL_BGR,
-	BGRA = GL_BGRA
+	BGRA = GL_BGRA,
+	DEPTH = GL_DEPTH_COMPONENT
 };
 
 enum WrapMode {
@@ -140,6 +141,25 @@ public:
 	void bind(TextureType as = type) noexcept;
 	static void unbind(TextureType from = type) noexcept;
 	void activate(unsigned index, TextureType as = type) noexcept;
+
+	void texImage(
+		GLint level,
+		SizedImageFormat internalFormat,
+		GLsizei w,
+		UnsizedImageFormat fmt, gl::BasicType type,
+		const void* data = nullptr);
+	void texImage(
+		GLint level,
+		SizedImageFormat internalFormat,
+		GLsizei w, GLsizei h,
+		UnsizedImageFormat fmt, gl::BasicType type,
+		const void* data = nullptr);
+	void texImage(
+		GLint level,
+		SizedImageFormat internalFormat,
+		GLsizei w, GLsizei h, GLsizei d,
+		UnsizedImageFormat fmt, gl::BasicType type,
+		const void* data = nullptr);
 
 	void texSubimage(
 		GLsizei level,
