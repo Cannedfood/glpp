@@ -61,7 +61,7 @@ public:
 
 	FramebufferStatus checkStatus() const noexcept;
 
-	operator unsigned() noexcept { return mHandle; }
+	operator unsigned() const noexcept { return mHandle; }
 
 	void debugLabel(std::string_view s) noexcept;
 };
