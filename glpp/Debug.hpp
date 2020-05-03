@@ -121,7 +121,11 @@ void debugFilter(
 } // namespace gl
 
 #ifndef NDEBUG
-#define GLPP_DEBUG_SCOPE() ::gl::DebugGroup _glpp_debug_group(__PRETTY_FUNCTION__)
+#ifdef _MSC_VER
+	#define GLPP_DEBUG_SCOPE() ::gl::DebugGroup _glpp_debug_group(__FUNCSIG__)
+#else
+	#define GLPP_DEBUG_SCOPE() ::gl::DebugGroup _glpp_debug_group(__PRETTY_FUNCTION__)
+#endif
 #define GLPP_DEBUG_GROUP(MSG) ::gl::DebugGroup _glpp_debug_group(MSG)
 #else
 #define GLPP_DEBUG_SCOPE()
