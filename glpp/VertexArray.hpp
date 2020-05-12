@@ -44,6 +44,8 @@ public:
 		size_t stride, size_t offset = 0) noexcept;
 
 	void debugLabel(std::string_view name) noexcept;
+
+	operator unsigned() noexcept { return mHandle; }
 };
 
 } // namespace gl
