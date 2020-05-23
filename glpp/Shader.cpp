@@ -12,7 +12,25 @@
 namespace gl {
 
 GLPP_DECL
-Shader::Shader(ShaderType type) noexcept : mHandle(0)
+std::string_view to_string(ShaderType type) noexcept {
+	switch (type) {
+	case COMPUTE_SHADER: return "COMPUTE_SHADER";
+	case VERTEX_SHADER: return "VERTEX_SHADER";
+	case FRAGMENT_SHADER: return "FRAGMENT_SHADER";
+	case GEOMETRY_SHADER: return "GEOMETRY_SHADER";
+	case TESS_CONTROL_SHADER: return"TESS_CONTROL_SHADER";
+	case TESS_EVALUATION_SHADER: return "TESS_EVALUATION_SHADER";
+	}
+}
+
+GLPP_DECL
+Shader::Shader(std::nullptr_t) noexcept :
+	mHandle(0)
+{}
+
+GLPP_DECL
+Shader::Shader(ShaderType type) noexcept :
+	Shader(nullptr)
 {
 	init(type);
 }
@@ -52,8 +70,7 @@ GLPP_DECL
 Shader::Shader(ShaderType type, unsigned sourceCount, char const* const* sources, int const* lengths) :
 	Shader(type)
 {
-	compileGLSL(sourceCount, sources, lengths);
-	if(!compileStatus()) {
+	if(!compileGLSL(sourceCount, sources, lengths)) {
 		throw std::runtime_error("Failed compiling shader:\n" + infoLog());
 	}
 }
@@ -78,17 +95,16 @@ Shader::Shader(ShaderType type, std::initializer_list<std::string_view> sources)
 		strns.push_back(src.data());
 		lengths.push_back(src.size());
 	}
-	compileGLSL(sources.size(), strns.data(), lengths.data());
-	if(!compileStatus()) {
+	if(!compileGLSL(sources.size(), strns.data(), lengths.data())) {
 		throw std::runtime_error("Failed compiling shader:\n" + infoLog());
 	}
 }
 GLPP_DECL
-void Shader::compileGLSL(unsigned sourceCount, char const* const* sources, int const* lengths) noexcept {
+bool Shader::compileGLSL(unsigned sourceCount, char const* const* sources, int const* lengths) noexcept {
 	glShaderSource(mHandle, sourceCount, sources, lengths);
 	glCompileShader(mHandle);
 
-	// TODO: check status
+	return compileStatus();
 }
 
 GLPP_DECL

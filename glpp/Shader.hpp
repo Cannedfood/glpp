@@ -12,14 +12,18 @@ enum ShaderType : GLenum {
 	FRAGMENT_SHADER        = GL_FRAGMENT_SHADER,
 	GEOMETRY_SHADER        = GL_GEOMETRY_SHADER,
 	TESS_CONTROL_SHADER    = GL_TESS_CONTROL_SHADER,
-	TESS_EVALUATION_SHADER = GL_TESS_EVALUATION_SHADER
+	TESS_EVALUATION_SHADER = GL_TESS_EVALUATION_SHADER,
+	COMPUTE_SHADER         = GL_COMPUTE_SHADER
 };
+
+std::string_view to_string(ShaderType type) noexcept;
 
 /// A single stage of a shader Program.
 /// Needs to be linked into a Program, after which it can be destroyed.
 class Shader {
 	unsigned mHandle;
 public:
+	Shader(std::nullptr_t) noexcept;
 	Shader(ShaderType type) noexcept;
 	~Shader() noexcept;
 
@@ -36,7 +40,7 @@ public:
 	Shader(ShaderType type, char const* source, int len = -1);
 	Shader(ShaderType type, std::string_view source);
 	Shader(ShaderType type, std::initializer_list<std::string_view> sources);
-	void compileGLSL(unsigned sourceCount, char const* const* sources, int const* lengths = nullptr) noexcept;
+	[[nodiscard]] bool compileGLSL(unsigned sourceCount, char const* const* sources, int const* lengths = nullptr) noexcept;
 
 	// Spirv
 	Shader(ShaderType type, uint8_t const* source, int len);

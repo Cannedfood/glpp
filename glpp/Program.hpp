@@ -27,6 +27,7 @@ public: using std::runtime_error::runtime_error;
 class Program {
 	unsigned mHandle;
 public:
+	Program(std::nullptr_t) noexcept;
 	Program() noexcept;
 	~Program() noexcept;
 

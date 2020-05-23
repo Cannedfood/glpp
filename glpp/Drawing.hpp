@@ -56,4 +56,9 @@ void drawElements(Topography topo, BasicType indexType, GLsizei count) noexcept 
 	drawElements(topo, indexType, 0, count);
 }
 
+inline
+void drawArrays(Topography topo, int count, int first) noexcept {
+	glDrawArrays(topo, first, count);
+}
+
 } // namespace gl

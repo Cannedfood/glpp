@@ -9,8 +9,12 @@
 namespace gl {
 
 GLPP_DECL
-Program::Program() noexcept :
+Program::Program(std::nullptr_t) noexcept :
 	mHandle(0)
+{}
+GLPP_DECL
+Program::Program() noexcept :
+	Program(nullptr)
 {
 	init();
 }
