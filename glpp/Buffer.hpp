@@ -74,17 +74,23 @@ __GLPP_ENUM_BITFIELD_OPERATORS(BufferMappingBits);
 
 template<BufferType kBufferType>
 class Buffer {
-	unsigned mHandle;
+	unsigned mHandle = 0;
 public:
 	Buffer() noexcept;
 	~Buffer() noexcept;
 
 	Buffer(std::nullptr_t) noexcept;
 
+	Buffer(BufferUsage usage, size_t bytes, void const* data) noexcept;
+	template<class ContainerT> Buffer(BufferUsage usage, ContainerT const& c) noexcept : Buffer(usage, std::size(c) * sizeof(c[0]), std::data(c)) {}
+
 	Buffer(Buffer&& other) noexcept;
 	Buffer& operator=(Buffer&& other) noexcept;
 	Buffer(Buffer const& other) noexcept = delete;
 	Buffer& operator=(Buffer const& other) noexcept = delete;
+
+	void init() noexcept;
+	void destroy() noexcept;
 
 	void bind(BufferType as = kBufferType) noexcept;
 	void unbind(BufferType as = kBufferType) noexcept;

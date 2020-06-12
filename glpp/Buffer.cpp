@@ -1,5 +1,7 @@
 #include "Buffer.hpp"
 
+#include <utility>
+
 #ifndef GLPP_DECL
 	#define GLPP_DECL
 #endif
@@ -8,14 +10,12 @@ namespace gl {
 
 template<BufferType type> GLPP_DECL
 Buffer<type>::Buffer() noexcept {
-	glGenBuffers(1, &mHandle);
-	bind(); unbind(); // Let the driver know what kind of buffer we want by binding it once
+	init();
 }
 
 template<BufferType type> GLPP_DECL
 Buffer<type>::~Buffer() noexcept {
-	if(mHandle)
-		glDeleteBuffers(1, &mHandle);
+	destroy();
 }
 
 template<BufferType type> GLPP_DECL
@@ -23,21 +23,39 @@ Buffer<type>::Buffer(std::nullptr_t) noexcept :
 	mHandle(0)
 {}
 
+template<BufferType type> GLPP_DECL
+Buffer<type>::Buffer(BufferUsage usage, size_t bytes, void const* data) noexcept :
+	Buffer()
+{
+	this->data(usage, bytes, data);
+}
+
+template<BufferType type> GLPP_DECL
+void Buffer<type>::init() noexcept {
+	destroy();
+
+	glGenBuffers(1, &mHandle);
+	bind(); unbind(); // Let the driver know what kind of buffer we want by binding it once
+}
+template<BufferType type> GLPP_DECL
+void Buffer<type>::destroy() noexcept {
+	if(mHandle) {
+		glDeleteBuffers(1, &mHandle);
+		mHandle = 0;
+	}
+}
+
 // -- Move -------------------------------------------------------
 
 template<BufferType type> GLPP_DECL
 Buffer<type>::Buffer(Buffer&& other) noexcept :
-	mHandle(other.mHandle)
-{
-	other.mHandle = 0;
-}
+	mHandle(std::exchange(other.mHandle, 0))
+{}
 
 template<BufferType type> GLPP_DECL
 Buffer<type>& Buffer<type>::operator=(Buffer&& other) noexcept {
-	if(mHandle)
-		glDeleteBuffers(1, &mHandle);
-	mHandle = other.mHandle;
-	other.mHandle = 0;
+	destroy();
+	mHandle = std::exchange(other.mHandle, 0);
 	return *this;
 }
 
