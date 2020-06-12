@@ -69,4 +69,6 @@ enum BasicType {
 	DOUBLE     = FLOAT64,
 };
 
+size_t sizeOf(BasicType type) noexcept;
+
 } // namespace gl
