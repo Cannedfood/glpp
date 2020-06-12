@@ -71,6 +71,17 @@ enum UnsizedImageFormat {
 	DEPTH = GL_DEPTH_COMPONENT
 };
 
+enum CompressedImageFormat {
+	COMPRESSED_RGB_S3TC_DXT1        = GL_COMPRESSED_RGB_S3TC_DXT1_EXT,
+	COMPRESSED_SRGB_S3TC_DXT1       = GL_COMPRESSED_SRGB_S3TC_DXT1_EXT,
+	COMPRESSED_RGBA_S3TC_DXT1       = GL_COMPRESSED_RGBA_S3TC_DXT1_EXT,
+	COMPRESSED_SRGB_ALPHA_S3TC_DXT1 = GL_COMPRESSED_SRGB_ALPHA_S3TC_DXT1_EXT,
+	COMPRESSED_RGBA_S3TC_DXT3       = GL_COMPRESSED_RGBA_S3TC_DXT3_EXT,
+	COMPRESSED_SRGB_ALPHA_S3TC_DXT3 = GL_COMPRESSED_SRGB_ALPHA_S3TC_DXT3_EXT,
+	COMPRESSED_RGBA_S3TC_DXT5       = GL_COMPRESSED_RGBA_S3TC_DXT5_EXT,
+	COMPRESSED_SRGB_ALPHA_S3TC_DXT5 = GL_COMPRESSED_SRGB_ALPHA_S3TC_DXT5_EXT
+};
+
 enum WrapMode {
 	CLAMP = GL_CLAMP,
 	CLAMP_TO_EDGE   = GL_CLAMP_TO_EDGE,
@@ -159,6 +170,25 @@ public:
 		SizedImageFormat internalFormat,
 		GLsizei w, GLsizei h, GLsizei d,
 		UnsizedImageFormat fmt, gl::BasicType type,
+		const void* data = nullptr);
+
+	void compressedTexImage(
+		GLint level,
+		CompressedImageFormat format,
+		GLsizei w,
+		unsigned dataSize,
+		const void* data = nullptr);
+	void compressedTexImage(
+		GLint level,
+		CompressedImageFormat format,
+		GLsizei w, GLsizei h,
+		unsigned dataSize,
+		const void* data = nullptr);
+	void compressedTexImage(
+		GLint level,
+		CompressedImageFormat format,
+		GLsizei w, GLsizei h, GLsizei d,
+		unsigned dataSize,
 		const void* data = nullptr);
 
 	void texSubimage(

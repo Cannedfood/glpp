@@ -92,6 +92,40 @@ void BasicTexture<type>::texImage(
 }
 
 template<TextureType type> GLPP_DECL
+void BasicTexture<type>::compressedTexImage(
+	GLint level,
+	CompressedImageFormat format,
+	GLsizei w,
+	unsigned dataSize,
+	const void* data)
+{
+	glBindTexture(type, *this);
+	glCompressedTexImage1D(type, level, format, w, 0, dataSize, data);
+}
+template<TextureType type> GLPP_DECL
+void BasicTexture<type>::compressedTexImage(
+	GLint level,
+	CompressedImageFormat format,
+	GLsizei w, GLsizei h,
+	unsigned dataSize,
+	const void* data)
+{
+	glBindTexture(type, *this);
+	glCompressedTexImage2D(type, level, format, w, h, 0, dataSize, data);
+}
+template<TextureType type> GLPP_DECL
+void BasicTexture<type>::compressedTexImage(
+	GLint level,
+	CompressedImageFormat format,
+	GLsizei w, GLsizei h, GLsizei d,
+	unsigned dataSize,
+	const void* data)
+{
+	glBindTexture(type, *this);
+	glCompressedTexImage3D(type, level, format, w, h, d, 0, dataSize, data);
+}
+
+template<TextureType type> GLPP_DECL
 void BasicTexture<type>::texSubimage(
 	GLsizei level,
 	GLsizei xoff, GLsizei width,
