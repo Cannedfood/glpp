@@ -57,7 +57,7 @@ void drawElements(Topography topo, BasicType indexType, GLsizei count) noexcept 
 }
 
 inline
-void drawArrays(Topography topo, int count, int first) noexcept {
+void drawArrays(Topography topo, int count, int first = 0) noexcept {
 	glDrawArrays(topo, first, count);
 }
 
