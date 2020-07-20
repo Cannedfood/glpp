@@ -60,6 +60,7 @@ public:
 	void unbind(FramebufferMode mode = gl::READ_WRITE_FRAMEBUFFER) noexcept;
 
 	FramebufferStatus checkStatus() const noexcept;
+	void assertStatus() const;
 
 	operator unsigned() const noexcept { return mHandle; }
 

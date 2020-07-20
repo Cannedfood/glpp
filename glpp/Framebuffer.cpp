@@ -1,6 +1,7 @@
 #include "Framebuffer.hpp"
 
 #include <utility>
+#include <stdexcept>
 
 #ifndef GLPP_DECL
 	#define GLPP_DECL
@@ -90,6 +91,20 @@ FramebufferStatus Framebuffer::checkStatus() const noexcept {
 GLPP_DECL
 void Framebuffer::debugLabel(std::string_view s) noexcept {
 	glObjectLabel(GL_FRAMEBUFFER, mHandle, s.size(), s.data());
+}
+
+GLPP_DECL
+void Framebuffer::assertStatus() const {
+	switch (checkStatus()) {
+	case FRAMEBUFFER_COMPLETE: return;
+	case FRAMEBUFFER_INCOMPLETE_ATTACHMENT:         throw std::runtime_error("FRAMEBUFFER_INCOMPLETE_ATTACHMENT");
+	case FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT: throw std::runtime_error("FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT");
+	case FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER:        throw std::runtime_error("FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER");
+	case FRAMEBUFFER_INCOMPLETE_READ_BUFFER:        throw std::runtime_error("FRAMEBUFFER_INCOMPLETE_READ_BUFFER");
+	case FRAMEBUFFER_UNSUPPORTED:                   throw std::runtime_error("FRAMEBUFFER_UNSUPPORTED");
+	case FRAMEBUFFER_INCOMPLETE_MULTISAMPLE:        throw std::runtime_error("FRAMEBUFFER_INCOMPLETE_MULTISAMPLE");
+	case FRAMEBUFFER_INCOMPLETE_LAYER_TARGETS:      throw std::runtime_error("FRAMEBUFFER_INCOMPLETE_LAYER_TARGETS");
+	}
 }
 
 // =============================================================
