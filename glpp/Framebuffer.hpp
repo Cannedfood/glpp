@@ -44,8 +44,12 @@ enum AttachmentType {
 class Framebuffer {
 	unsigned mHandle = 0;
 public:
+	Framebuffer(std::nullptr_t) noexcept;
 	Framebuffer() noexcept;
 	~Framebuffer() noexcept;
+
+	void init() noexcept;
+	void destroy() noexcept;
 
 	Framebuffer(Framebuffer&& other) noexcept;
 	Framebuffer& operator=(Framebuffer&& other) noexcept;

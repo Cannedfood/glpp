@@ -34,30 +34,36 @@ std::string_view to_string(FramebufferStatus status) noexcept {
 // =============================================================
 
 GLPP_DECL
-Framebuffer::Framebuffer() noexcept {
-	glGenFramebuffers(1, &mHandle);
-	glBindFramebuffer(GL_FRAMEBUFFER, mHandle);
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-}
+Framebuffer::Framebuffer(std::nullptr_t) noexcept {}
 GLPP_DECL
-Framebuffer::~Framebuffer() noexcept {
-	if(mHandle) {
-		glDeleteFramebuffers(1, &mHandle);
-	}
-}
+Framebuffer::Framebuffer() noexcept { init(); }
+GLPP_DECL
+Framebuffer::~Framebuffer() noexcept { destroy(); }
 
 GLPP_DECL
 Framebuffer::Framebuffer(Framebuffer&& other) noexcept :
 	mHandle(std::exchange(other.mHandle, 0))
 {}
-
 GLPP_DECL
 Framebuffer& Framebuffer::operator=(Framebuffer&& other) noexcept {
-	if(mHandle) {
-		glDeleteFramebuffers(1, &mHandle);
-	}
+	destroy();
 	mHandle = std::exchange(other.mHandle, 0);
 	return *this;
+}
+
+GLPP_DECL
+void Framebuffer::init() noexcept {
+	destroy();
+	glGenFramebuffers(1, &mHandle);
+	glBindFramebuffer(GL_FRAMEBUFFER, mHandle);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+}
+GLPP_DECL
+void Framebuffer::destroy() noexcept {
+	if(mHandle) {
+		glDeleteFramebuffers(1, &mHandle);
+		mHandle = 0;
+	}
 }
 
 GLPP_DECL
