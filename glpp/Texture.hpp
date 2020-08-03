@@ -139,13 +139,14 @@ public:
 	BasicTexture() noexcept;
 	~BasicTexture() noexcept;
 
+	BasicTexture(std::nullptr_t) noexcept;
+
 	BasicTexture(BasicTexture&& other) noexcept;
 	BasicTexture& operator=(BasicTexture&& other) noexcept;
 	BasicTexture(BasicTexture const& other) noexcept            = delete;
 	BasicTexture& operator=(BasicTexture const& other) noexcept = delete;
 	// TODO: incomplete
 
-	BasicTexture(std::nullptr_t) noexcept;
 	void init() noexcept;
 	void reset() noexcept;
 
@@ -231,6 +232,8 @@ public:
 	void wrapT(WrapMode) noexcept;
 	void wrapR(WrapMode) noexcept;
 	void wrap(WrapMode s, WrapMode t = CLAMP, WrapMode r = CLAMP) noexcept;
+	float maxAnisotropy() noexcept;
+	void  maxAnisotropy(float f) noexcept;
 
 	void debugLabel(std::string_view name) noexcept;
 

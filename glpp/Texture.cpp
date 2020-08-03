@@ -242,6 +242,16 @@ void BasicTexture<type>::wrap(WrapMode s, WrapMode t, WrapMode r) noexcept {
 	wrapT(t);
 	wrapR(r);
 }
+template<TextureType type> GLPP_DECL
+float BasicTexture<type>::maxAnisotropy() noexcept {
+	float result = 0;
+	glGetTextureParameterfv(mHandle, GL_TEXTURE_MAX_ANISOTROPY, &result);
+	return result;
+}
+template<TextureType type> GLPP_DECL
+void BasicTexture<type>::maxAnisotropy(float f) noexcept {
+	glTextureParameterf(mHandle, GL_TEXTURE_MAX_ANISOTROPY, f);
+}
 
 template<TextureType type> GLPP_DECL
 void BasicTexture<type>::debugLabel(std::string_view name) noexcept {
