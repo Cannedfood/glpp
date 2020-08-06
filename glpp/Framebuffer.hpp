@@ -8,7 +8,7 @@
 
 namespace gl {
 
-enum FramebufferStatus {
+enum FramebufferStatus : GLenum {
 	FRAMEBUFFER_COMPLETE                      = GL_FRAMEBUFFER_COMPLETE,
 	FRAMEBUFFER_INCOMPLETE_ATTACHMENT         = GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT,
 	FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT = GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT,
@@ -27,7 +27,7 @@ enum FramebufferMode {
 	READ_WRITE_FRAMEBUFFER = GL_FRAMEBUFFER
 };
 
-enum AttachmentType {
+enum AttachmentType : GLenum {
 	COLOR_ATTACHMENT0        = GL_COLOR_ATTACHMENT0,
 	COLOR_ATTACHMENT1        = GL_COLOR_ATTACHMENT1,
 	COLOR_ATTACHMENT2        = GL_COLOR_ATTACHMENT2,
@@ -59,6 +59,10 @@ public:
 	void texture(AttachmentType type, unsigned tex, unsigned level = 0) noexcept;
 	void texture(AttachmentType type, unsigned tex, CubemapFace face, unsigned level = 0) noexcept;
 	void renderbuffer(AttachmentType type, unsigned renderbuffer) noexcept;
+
+	void drawBuffers(gl::AttachmentType const* attachments, unsigned n) noexcept;
+	template<size_t N>
+	void drawBuffers(AttachmentType const (& attachments)[N]) noexcept { drawBuffers(std::data(attachments), std::size(attachments)); }
 
 	void bind(FramebufferMode mode = gl::READ_WRITE_FRAMEBUFFER) noexcept;
 	void unbind(FramebufferMode mode = gl::READ_WRITE_FRAMEBUFFER) noexcept;

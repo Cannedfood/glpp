@@ -80,6 +80,11 @@ void Framebuffer::renderbuffer(AttachmentType type, unsigned renderbuffer) noexc
 }
 
 GLPP_DECL
+void Framebuffer::drawBuffers(gl::AttachmentType const* attachments, unsigned n) noexcept {
+	glNamedFramebufferDrawBuffers(mHandle, n, (GLenum const*)attachments);
+}
+
+GLPP_DECL
 void Framebuffer::bind(FramebufferMode mode) noexcept {
 	glBindFramebuffer(mode, mHandle);
 }
@@ -95,11 +100,6 @@ FramebufferStatus Framebuffer::checkStatus() const noexcept {
 }
 
 GLPP_DECL
-void Framebuffer::debugLabel(std::string_view s) noexcept {
-	glObjectLabel(GL_FRAMEBUFFER, mHandle, s.size(), s.data());
-}
-
-GLPP_DECL
 void Framebuffer::assertStatus() const {
 	switch (checkStatus()) {
 	case FRAMEBUFFER_COMPLETE: return;
@@ -111,6 +111,11 @@ void Framebuffer::assertStatus() const {
 	case FRAMEBUFFER_INCOMPLETE_MULTISAMPLE:        throw std::runtime_error("FRAMEBUFFER_INCOMPLETE_MULTISAMPLE");
 	case FRAMEBUFFER_INCOMPLETE_LAYER_TARGETS:      throw std::runtime_error("FRAMEBUFFER_INCOMPLETE_LAYER_TARGETS");
 	}
+}
+
+GLPP_DECL
+void Framebuffer::debugLabel(std::string_view s) noexcept {
+	glObjectLabel(GL_FRAMEBUFFER, mHandle, s.size(), s.data());
 }
 
 // =============================================================
