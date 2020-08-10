@@ -239,7 +239,21 @@ void BasicTexture<type>::wrapR(WrapMode wrap) noexcept {
 template<TextureType type> GLPP_DECL
 void BasicTexture<type>::wrap(WrapMode s, WrapMode t, WrapMode r) noexcept {
 	wrapS(s);
+	if constexpr(type == gl::TEXTURE_1D || type == gl::TEXTURE_1D_ARRAY) return;
 	wrapT(t);
+	if constexpr(
+		type == gl::TEXTURE_2D ||
+		type == gl::TEXTURE_2D_ARRAY ||
+		type == gl::TEXTURE_2D_MULTISAMPLE ||
+		type == gl::TEXTURE_2D_MULTISAMPLE_ARRAY ||
+		type == gl::TEXTURE_CUBE_MAP ||
+		type == gl::TEXTURE_CUBE_MAP_ARRAY ||
+		type == gl::TEXTURE_RECTANGLE
+	)
+	{
+		return;
+	}
+
 	wrapR(r);
 }
 template<TextureType type> GLPP_DECL
