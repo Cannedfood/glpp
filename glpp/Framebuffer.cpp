@@ -55,8 +55,8 @@ GLPP_DECL
 void Framebuffer::init() noexcept {
 	destroy();
 	glGenFramebuffers(1, &mHandle);
-	glBindFramebuffer(GL_FRAMEBUFFER, mHandle);
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, mHandle);
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
 }
 GLPP_DECL
 void Framebuffer::destroy() noexcept {
@@ -71,8 +71,8 @@ void Framebuffer::texture(AttachmentType type, unsigned tex, unsigned level) noe
 	glNamedFramebufferTexture(mHandle, type, tex, level);
 }
 GLPP_DECL
-void Framebuffer::texture(AttachmentType type, unsigned tex, CubemapFace face, unsigned level) noexcept {
-	glNamedFramebufferTexture2DEXT(mHandle, type, tex, face, level);
+void Framebuffer::texture(AttachmentType type, unsigned tex, CubemapFaceIndex face, unsigned level) noexcept {
+	glNamedFramebufferTextureLayer(mHandle, type, tex, level, face);
 }
 GLPP_DECL
 void Framebuffer::renderbuffer(AttachmentType type, unsigned renderbuffer) noexcept {

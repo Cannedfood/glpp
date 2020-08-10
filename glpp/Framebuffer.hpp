@@ -41,6 +41,15 @@ enum AttachmentType : GLenum {
 	DEPTH_STENCIL_ATTACHMENT = GL_DEPTH_STENCIL_ATTACHMENT
 };
 
+enum CubemapFaceIndex {
+	CUBEMAP_POSITIVE_X_IDX = 0,
+	CUBEMAP_NEGATIVE_X_IDX = 1,
+	CUBEMAP_POSITIVE_Y_IDX = 2,
+	CUBEMAP_NEGATIVE_Y_IDX = 3,
+	CUBEMAP_POSITIVE_Z_IDX = 4,
+	CUBEMAP_NEGATIVE_Z_IDX = 5,
+};
+
 class Framebuffer {
 	unsigned mHandle = 0;
 public:
@@ -57,7 +66,7 @@ public:
 	Framebuffer& operator=(Framebuffer const& other) = delete;
 
 	void texture(AttachmentType type, unsigned tex, unsigned level = 0) noexcept;
-	void texture(AttachmentType type, unsigned tex, CubemapFace face, unsigned level = 0) noexcept;
+	void texture(AttachmentType type, unsigned tex, CubemapFaceIndex face, unsigned level = 0) noexcept;
 	void renderbuffer(AttachmentType type, unsigned renderbuffer) noexcept;
 
 	void drawBuffers(gl::AttachmentType const* attachments, unsigned n) noexcept;
