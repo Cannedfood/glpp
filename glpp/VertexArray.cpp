@@ -12,7 +12,7 @@ GLPP_DECL
 VertexArray::VertexArray() noexcept :
 	mHandle(0)
 {
-	gen();
+	init();
 }
 
 GLPP_DECL
@@ -21,7 +21,12 @@ VertexArray::~VertexArray() noexcept {
 }
 
 GLPP_DECL
-void VertexArray::gen() noexcept {
+VertexArray::VertexArray(std::nullptr_t) noexcept :
+	mHandle(0)
+{}
+
+GLPP_DECL
+void VertexArray::init() noexcept {
 	destroy();
 	glGenVertexArrays(1, &mHandle);
 	bind();
