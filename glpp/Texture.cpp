@@ -17,48 +17,49 @@ BasicTexture<type>::~BasicTexture() noexcept {
 
 template<TextureType type> GLPP_DECL
 BasicTexture<type>::BasicTexture(BasicTexture&& other) noexcept  :
-	mHandle(other.mHandle)
+	BasicTextureView<type>(other.mHandle)
 {
 	other.mHandle = 0;
 }
 template<TextureType type> GLPP_DECL
 BasicTexture<type>& BasicTexture<type>::operator=(BasicTexture&& other) noexcept {
 	reset();
-	mHandle = other.mHandle;
+	this->mHandle = other.mHandle;
 	other.mHandle = 0;
 	return *this;
 }
 
 template<TextureType type> GLPP_DECL
-BasicTexture<type>::BasicTexture(std::nullptr_t) noexcept : mHandle(0) {}
+BasicTexture<type>::BasicTexture(std::nullptr_t) noexcept : BasicTextureView<type>(0) {}
 template<TextureType type> GLPP_DECL
 void BasicTexture<type>::init() noexcept {
-	glGenTextures(1, &mHandle);
-	bind(); unbind();
+	glGenTextures(1, &this->mHandle);
+	this->bind();
+	this->unbind();
 }
 template<TextureType type> GLPP_DECL
 void BasicTexture<type>::reset() noexcept {
-	if(mHandle) {
-		glDeleteTextures(1, &mHandle);
-		mHandle = 0;
+	if(this->mHandle) {
+		glDeleteTextures(1, &this->mHandle);
+		this->mHandle = 0;
 	}
 }
 
 template<TextureType type> GLPP_DECL
-void BasicTexture<type>::bind(TextureType as) noexcept {
+void BasicTextureView<type>::bind(TextureType as) noexcept {
 	glBindTexture(as, mHandle);
 }
 template<TextureType type> GLPP_DECL
-void BasicTexture<type>::unbind(TextureType from) noexcept {
+void BasicTextureView<type>::unbind(TextureType from) noexcept {
 	glBindTexture(from, 0);
 }
 template<TextureType type> GLPP_DECL
-void BasicTexture<type>::activate(unsigned index, TextureType as) noexcept {
+void BasicTextureView<type>::activate(unsigned index, TextureType as) noexcept {
 	glActiveTexture(GL_TEXTURE0 + index);
 	bind(as);
 }
 template<TextureType type> GLPP_DECL
-void BasicTexture<type>::texImage(
+void BasicTextureView<type>::texImage(
 	GLint level,
 	SizedImageFormat internalFormat,
 	GLsizei w,
@@ -69,7 +70,7 @@ void BasicTexture<type>::texImage(
 	glTexImage1D(type, level, internalFormat, w, 0, fmt, dataType, data);
 }
 template<TextureType type> GLPP_DECL
-void BasicTexture<type>::texImage(
+void BasicTextureView<type>::texImage(
 	GLint level,
 	SizedImageFormat internalFormat,
 	GLsizei w, GLsizei h,
@@ -80,7 +81,7 @@ void BasicTexture<type>::texImage(
 	glTexImage2D(type, level, internalFormat, w, h, 0, fmt, dataType, data);
 }
 template<TextureType type> GLPP_DECL
-void BasicTexture<type>::texImage(
+void BasicTextureView<type>::texImage(
 	GLint level,
 	SizedImageFormat internalFormat,
 	GLsizei w, GLsizei h, GLsizei d,
@@ -92,7 +93,7 @@ void BasicTexture<type>::texImage(
 }
 
 template<TextureType type> GLPP_DECL
-void BasicTexture<type>::compressedTexImage(
+void BasicTextureView<type>::compressedTexImage(
 	GLint level,
 	CompressedImageFormat format,
 	GLsizei w,
@@ -103,7 +104,7 @@ void BasicTexture<type>::compressedTexImage(
 	glCompressedTexImage1D(type, level, format, w, 0, dataSize, data);
 }
 template<TextureType type> GLPP_DECL
-void BasicTexture<type>::compressedTexImage(
+void BasicTextureView<type>::compressedTexImage(
 	GLint level,
 	CompressedImageFormat format,
 	GLsizei w, GLsizei h,
@@ -114,7 +115,7 @@ void BasicTexture<type>::compressedTexImage(
 	glCompressedTexImage2D(type, level, format, w, h, 0, dataSize, data);
 }
 template<TextureType type> GLPP_DECL
-void BasicTexture<type>::compressedTexImage(
+void BasicTextureView<type>::compressedTexImage(
 	GLint level,
 	CompressedImageFormat format,
 	GLsizei w, GLsizei h, GLsizei d,
@@ -126,7 +127,7 @@ void BasicTexture<type>::compressedTexImage(
 }
 
 template<TextureType type> GLPP_DECL
-void BasicTexture<type>::texSubimage(
+void BasicTextureView<type>::texSubimage(
 	GLsizei level,
 	GLsizei xoff, GLsizei width,
 	UnsizedImageFormat format, BasicType pxtype, void const* pixels)
@@ -134,7 +135,7 @@ void BasicTexture<type>::texSubimage(
 	glTextureSubImage1D(mHandle, level, xoff, width, format, pxtype, pixels);
 }
 template<TextureType type> GLPP_DECL
-void BasicTexture<type>::texSubimage(
+void BasicTextureView<type>::texSubimage(
 	GLsizei level,
 	GLsizei xoff, GLsizei yoff, GLsizei width, GLsizei height,
 	UnsizedImageFormat format, BasicType pxtype, void const* pixels)
@@ -142,7 +143,7 @@ void BasicTexture<type>::texSubimage(
 	glTextureSubImage2D(mHandle, level, xoff, yoff, width, height, format, pxtype, pixels);
 }
 template<TextureType type> GLPP_DECL
-void BasicTexture<type>::texSubimage(
+void BasicTextureView<type>::texSubimage(
 	GLsizei level,
 	GLsizei xoff, GLsizei yoff, GLsizei zoff, GLsizei width, GLsizei height, GLsizei depth,
 	UnsizedImageFormat format, BasicType pxtype, void const* pixels)
@@ -151,93 +152,93 @@ void BasicTexture<type>::texSubimage(
 }
 
 template<TextureType type> GLPP_DECL
-void BasicTexture<type>::texStorage(GLsizei levels, SizedImageFormat internalFormat, GLsizei width) noexcept {
+void BasicTextureView<type>::texStorage(GLsizei levels, SizedImageFormat internalFormat, GLsizei width) noexcept {
 	glTextureStorage1D(mHandle, levels, internalFormat, width);
 }
 template<TextureType type> GLPP_DECL
-void BasicTexture<type>::texStorage(GLsizei levels, SizedImageFormat internalFormat, GLsizei width, GLsizei height) noexcept {
+void BasicTextureView<type>::texStorage(GLsizei levels, SizedImageFormat internalFormat, GLsizei width, GLsizei height) noexcept {
 	glTextureStorage2D(mHandle, levels, internalFormat, width, height);
 }
 template<TextureType type> GLPP_DECL
-void BasicTexture<type>::texStorage(GLsizei levels, SizedImageFormat internalFormat, GLsizei width, GLsizei height, GLsizei depth) noexcept {
+void BasicTextureView<type>::texStorage(GLsizei levels, SizedImageFormat internalFormat, GLsizei width, GLsizei height, GLsizei depth) noexcept {
 	glTextureStorage3D(mHandle, levels, internalFormat, width, height, depth);
 }
 
 template<TextureType type> GLPP_DECL
-void BasicTexture<type>::bindTextureUnit(unsigned textureUnit) noexcept {
+void BasicTextureView<type>::bindTextureUnit(unsigned textureUnit) noexcept {
 	glBindTextureUnit(textureUnit, mHandle);
 }
 
 template<TextureType type> GLPP_DECL
-void BasicTexture<type>::generateMipmaps() noexcept {
+void BasicTextureView<type>::generateMipmaps() noexcept {
 	glGenerateTextureMipmap(mHandle);
 }
 
 
 template<TextureType type> GLPP_DECL
-void BasicTexture<type>::depthToR() noexcept {
+void BasicTextureView<type>::depthToR() noexcept {
 	// glTextureParameteri(mHandle, GL_RED_DEPTh) // TODO
 }
 template<TextureType type> GLPP_DECL
-void BasicTexture<type>::stencilToR() noexcept {
+void BasicTextureView<type>::stencilToR() noexcept {
 
 }
 template<TextureType type> GLPP_DECL
-void BasicTexture<type>::baseLevel(unsigned level) noexcept {
+void BasicTextureView<type>::baseLevel(unsigned level) noexcept {
 	glTextureParameteri(mHandle, GL_TEXTURE_BASE_LEVEL, level);
 }
 template<TextureType type> GLPP_DECL
-void BasicTexture<type>::borderColor(float r, float g, float b, float a) noexcept {
+void BasicTextureView<type>::borderColor(float r, float g, float b, float a) noexcept {
 	float rgba[4] = {r, g, b, a};
 	glTextureParameterfv(mHandle, GL_TEXTURE_BORDER_COLOR, rgba);
 }
 template<TextureType type> GLPP_DECL
-void BasicTexture<type>::compareFunc(CompareFunc fn) noexcept {
+void BasicTextureView<type>::compareFunc(CompareFunc fn) noexcept {
 	glTextureParameteri(mHandle, GL_TEXTURE_COMPARE_FUNC, fn);
 }
 template<TextureType type> GLPP_DECL
-void BasicTexture<type>::lodBias(float value) noexcept {
+void BasicTextureView<type>::lodBias(float value) noexcept {
 	glTextureParameterf(mHandle, GL_TEXTURE_LOD_BIAS, value);
 }
 template<TextureType type> GLPP_DECL
-void BasicTexture<type>::minFilter(Filter filter) noexcept {
+void BasicTextureView<type>::minFilter(Filter filter) noexcept {
 	glTextureParameteri(mHandle, GL_TEXTURE_MIN_FILTER, filter);
 }
 template<TextureType type> GLPP_DECL
-void BasicTexture<type>::magFilter(Filter filter) noexcept {
+void BasicTextureView<type>::magFilter(Filter filter) noexcept {
 	glTextureParameteri(mHandle, GL_TEXTURE_MAG_FILTER, filter);
 }
 template<TextureType type> GLPP_DECL
-void BasicTexture<type>::minLod(float level) noexcept {
+void BasicTextureView<type>::minLod(float level) noexcept {
 	glTextureParameteri(mHandle, GL_TEXTURE_MIN_LOD, level);
 }
 template<TextureType type> GLPP_DECL
-void BasicTexture<type>::maxLod(float level) noexcept {
+void BasicTextureView<type>::maxLod(float level) noexcept {
 	glTextureParameteri(mHandle, GL_TEXTURE_MAX_LOD, level);
 }
 template<TextureType type> GLPP_DECL
-void BasicTexture<type>::maxLevel(unsigned level) noexcept {
+void BasicTextureView<type>::maxLevel(unsigned level) noexcept {
 	glTextureParameteri(mHandle, GL_TEXTURE_MAX_LEVEL, level);
 }
 template<TextureType type> GLPP_DECL
-void BasicTexture<type>::swizzle(ColorComponent r, ColorComponent g, ColorComponent b, ColorComponent a) noexcept {
+void BasicTextureView<type>::swizzle(ColorComponent r, ColorComponent g, ColorComponent b, ColorComponent a) noexcept {
 	GLint params[4] = {r, g, b, a};
 	glTextureParameteriv(mHandle, GL_TEXTURE_SWIZZLE_RGBA, params);
 }
 template<TextureType type> GLPP_DECL
-void BasicTexture<type>::wrapS(WrapMode wrap) noexcept {
+void BasicTextureView<type>::wrapS(WrapMode wrap) noexcept {
 	glTextureParameteri(mHandle, GL_TEXTURE_WRAP_S, wrap);
 }
 template<TextureType type> GLPP_DECL
-void BasicTexture<type>::wrapT(WrapMode wrap) noexcept {
+void BasicTextureView<type>::wrapT(WrapMode wrap) noexcept {
 	glTextureParameteri(mHandle, GL_TEXTURE_WRAP_T, wrap);
 }
 template<TextureType type> GLPP_DECL
-void BasicTexture<type>::wrapR(WrapMode wrap) noexcept {
+void BasicTextureView<type>::wrapR(WrapMode wrap) noexcept {
 	glTextureParameteri(mHandle, GL_TEXTURE_WRAP_R, wrap);
 }
 template<TextureType type> GLPP_DECL
-void BasicTexture<type>::wrap(WrapMode s, WrapMode t, WrapMode r) noexcept {
+void BasicTextureView<type>::wrap(WrapMode s, WrapMode t, WrapMode r) noexcept {
 	wrapS(s);
 	if constexpr(type == gl::TEXTURE_1D || type == gl::TEXTURE_1D_ARRAY) return;
 	wrapT(t);
@@ -257,18 +258,18 @@ void BasicTexture<type>::wrap(WrapMode s, WrapMode t, WrapMode r) noexcept {
 	wrapR(r);
 }
 template<TextureType type> GLPP_DECL
-float BasicTexture<type>::maxAnisotropy() noexcept {
+float BasicTextureView<type>::maxAnisotropy() noexcept {
 	float result = 0;
 	glGetTextureParameterfv(mHandle, GL_TEXTURE_MAX_ANISOTROPY, &result);
 	return result;
 }
 template<TextureType type> GLPP_DECL
-void BasicTexture<type>::maxAnisotropy(float f) noexcept {
+void BasicTextureView<type>::maxAnisotropy(float f) noexcept {
 	glTextureParameterf(mHandle, GL_TEXTURE_MAX_ANISOTROPY, f);
 }
 
 template<TextureType type> GLPP_DECL
-void BasicTexture<type>::debugLabel(std::string_view name) noexcept {
+void BasicTextureView<type>::debugLabel(std::string_view name) noexcept {
 	glObjectLabel(GL_TEXTURE, mHandle, name.size(), name.data());
 }
 

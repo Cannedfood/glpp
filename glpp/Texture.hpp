@@ -130,25 +130,16 @@ enum CubemapFace {
 };
 
 template<TextureType tType>
-class BasicTexture {
+class BasicTextureView {
+protected:
 	unsigned mHandle;
 public:
+	BasicTextureView(unsigned handle = 0) noexcept : mHandle(handle) {}
+
 	constexpr inline static const
 	TextureType type = tType;
 
-	BasicTexture() noexcept;
-	~BasicTexture() noexcept;
-
-	BasicTexture(std::nullptr_t) noexcept;
-
-	BasicTexture(BasicTexture&& other) noexcept;
-	BasicTexture& operator=(BasicTexture&& other) noexcept;
-	BasicTexture(BasicTexture const& other) noexcept            = delete;
-	BasicTexture& operator=(BasicTexture const& other) noexcept = delete;
 	// TODO: incomplete
-
-	void init() noexcept;
-	void reset() noexcept;
 
 	void bind(TextureType as = type) noexcept;
 	static void unbind(TextureType from = type) noexcept;
@@ -240,7 +231,41 @@ public:
 	operator unsigned() noexcept { return mHandle; }
 };
 
+template<TextureType tType>
+class BasicTexture : public BasicTextureView<tType> {
+public:
+	BasicTexture() noexcept;
+	~BasicTexture() noexcept;
+
+	BasicTexture(std::nullptr_t) noexcept;
+
+	BasicTexture(BasicTexture&& other) noexcept;
+	BasicTexture& operator=(BasicTexture&& other) noexcept;
+	BasicTexture(BasicTexture const& other) noexcept            = delete;
+	BasicTexture& operator=(BasicTexture const& other) noexcept = delete;
+
+	void init() noexcept;
+	void reset() noexcept;
+};
+
 inline namespace texture_types {
+
+using TextureView1D                 = BasicTextureView<TEXTURE_1D>;
+using TextureView1DArray            = BasicTextureView<TEXTURE_1D_ARRAY>;
+
+using TextureView2D                 = BasicTextureView<TEXTURE_2D>;
+using TextureView2DArray            = BasicTextureView<TEXTURE_2D_ARRAY>;
+using TextureView2DMultisample      = BasicTextureView<TEXTURE_2D_MULTISAMPLE>;
+using TextureView2DMultisampleArray = BasicTextureView<TEXTURE_2D_MULTISAMPLE_ARRAY>;
+
+using TextureView3D                 = BasicTextureView<TEXTURE_3D>;
+
+using TextureViewRectangle          = BasicTextureView<TEXTURE_RECTANGLE>;
+
+using TextureViewCubemap            = BasicTextureView<TEXTURE_CUBE_MAP>;
+using TextureViewCubemapArray       = BasicTextureView<TEXTURE_CUBE_MAP_ARRAY>;
+
+
 
 using Texture1D                 = BasicTexture<TEXTURE_1D>;
 using Texture1DArray            = BasicTexture<TEXTURE_1D_ARRAY>;
