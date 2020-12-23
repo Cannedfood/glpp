@@ -26,6 +26,7 @@
 #ifndef GLPP_NO_INLINE
 
 	#include "glpp/Buffer.cpp"
+	#include "glpp/Debug.cpp"
 	#include "glpp/Framebuffer.cpp"
 	#include "glpp/Program.cpp"
 	#include "glpp/Sampler.cpp"
