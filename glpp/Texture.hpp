@@ -7,6 +7,8 @@
 #include <cstddef>
 #include <string_view>
 
+#include <array>
+
 namespace gl {
 
 enum TextureType {
@@ -128,6 +130,9 @@ enum CubemapFace {
 	CUBEMAP_POSITIVE_Z = GL_TEXTURE_CUBE_MAP_POSITIVE_Z,
 	CUBEMAP_NEGATIVE_Z = GL_TEXTURE_CUBE_MAP_NEGATIVE_Z,
 };
+constexpr std::array<CubemapFace, 6> cubemapFaces() noexcept {
+	return { CUBEMAP_POSITIVE_X, CUBEMAP_NEGATIVE_X, CUBEMAP_POSITIVE_Y, CUBEMAP_NEGATIVE_Y, CUBEMAP_POSITIVE_Z, CUBEMAP_NEGATIVE_Z };
+}
 
 template<TextureType tType>
 class BasicTextureView {
@@ -152,6 +157,13 @@ public:
 		UnsizedImageFormat fmt, gl::BasicType type,
 		const void* data = nullptr);
 	void texImage(
+		GLint level,
+		SizedImageFormat internalFormat,
+		GLsizei w, GLsizei h,
+		UnsizedImageFormat fmt, gl::BasicType type,
+		const void* data = nullptr);
+	void texImage(
+		CubemapFace cubemapFace,
 		GLint level,
 		SizedImageFormat internalFormat,
 		GLsizei w, GLsizei h,
@@ -215,6 +227,7 @@ public:
 	void lodBias(float value) noexcept;
 	void minFilter(Filter) noexcept;
 	void magFilter(Filter) noexcept;
+	void filter(Filter minFilter, Filter magFilter) noexcept { this->minFilter(minFilter); this->magFilter(magFilter); }
 	void minLod(float level) noexcept;
 	void maxLod(float level) noexcept;
 	void maxLevel(unsigned level) noexcept;

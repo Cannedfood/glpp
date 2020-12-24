@@ -82,6 +82,18 @@ void BasicTextureView<type>::texImage(
 }
 template<TextureType type> GLPP_DECL
 void BasicTextureView<type>::texImage(
+	CubemapFace cubemapFaceIndex,
+	GLint level,
+	SizedImageFormat internalFormat,
+	GLsizei w, GLsizei h,
+	UnsizedImageFormat fmt, gl::BasicType dataType,
+	const void* data)
+{
+	glBindTexture(type, *this);
+	glTexImage2D(cubemapFaceIndex, level, internalFormat, w, h, 0, fmt, dataType, data);
+}
+template<TextureType type> GLPP_DECL
+void BasicTextureView<type>::texImage(
 	GLint level,
 	SizedImageFormat internalFormat,
 	GLsizei w, GLsizei h, GLsizei d,
@@ -89,7 +101,7 @@ void BasicTextureView<type>::texImage(
 	const void* data)
 {
 	glBindTexture(type, *this);
-	glTexImage2D(type, level, internalFormat, w, h, 0, fmt, dataType, data);
+	glTexImage3D(type, level, internalFormat, w, h, d, 0, fmt, dataType, data);
 }
 
 template<TextureType type> GLPP_DECL
