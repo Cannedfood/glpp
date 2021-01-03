@@ -258,7 +258,7 @@ public:
 	BasicTexture& operator=(BasicTexture const& other) noexcept = delete;
 
 	void init() noexcept;
-	void reset() noexcept;
+	void destroy() noexcept;
 };
 
 inline namespace texture_types {

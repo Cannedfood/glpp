@@ -12,7 +12,7 @@ BasicTexture<type>::BasicTexture() noexcept {
 }
 template<TextureType type> GLPP_DECL
 BasicTexture<type>::~BasicTexture() noexcept {
-	reset();
+	destroy();
 }
 
 template<TextureType type> GLPP_DECL
@@ -23,7 +23,7 @@ BasicTexture<type>::BasicTexture(BasicTexture&& other) noexcept  :
 }
 template<TextureType type> GLPP_DECL
 BasicTexture<type>& BasicTexture<type>::operator=(BasicTexture&& other) noexcept {
-	reset();
+	destroy();
 	this->mHandle = other.mHandle;
 	other.mHandle = 0;
 	return *this;
@@ -38,7 +38,7 @@ void BasicTexture<type>::init() noexcept {
 	this->unbind();
 }
 template<TextureType type> GLPP_DECL
-void BasicTexture<type>::reset() noexcept {
+void BasicTexture<type>::destroy() noexcept {
 	if(this->mHandle) {
 		glDeleteTextures(1, &this->mHandle);
 		this->mHandle = 0;
