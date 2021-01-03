@@ -90,6 +90,8 @@ public:
 	Renderbuffer() noexcept;
 	~Renderbuffer() noexcept;
 
+	Renderbuffer(std::nullptr_t) noexcept;
+
 	Renderbuffer(SizedImageFormat fmt, unsigned width, unsigned height) noexcept;
 	Renderbuffer(unsigned samples, SizedImageFormat fmt, unsigned width, unsigned height) noexcept;
 
@@ -97,6 +99,9 @@ public:
 	Renderbuffer& operator=(Renderbuffer&& other) noexcept;
 	Renderbuffer(Renderbuffer const& other) = delete;
 	Renderbuffer& operator=(Renderbuffer const& other) = delete;
+
+	void init() noexcept;
+	void free() noexcept;
 
 	void storage(SizedImageFormat fmt, unsigned width, unsigned height) noexcept;
 	void storage(unsigned samples, SizedImageFormat fmt, unsigned width, unsigned height) noexcept;

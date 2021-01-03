@@ -123,17 +123,26 @@ void Framebuffer::debugLabel(std::string_view s) noexcept {
 // =============================================================
 
 GLPP_DECL
-Renderbuffer::Renderbuffer() noexcept {
+Renderbuffer::Renderbuffer() noexcept { init(); }
+GLPP_DECL
+Renderbuffer::~Renderbuffer() noexcept { free(); }
+
+GLPP_DECL
+Renderbuffer::Renderbuffer(std::nullptr_t) noexcept { /* NOT init(); */ }
+
+GLPP_DECL
+void Renderbuffer::init() noexcept {
 	glGenRenderbuffers(1, &mHandle);
 	glBindRenderbuffer(GL_RENDERBUFFER, mHandle);
 	glBindRenderbuffer(GL_RENDERBUFFER, 0);
 }
 GLPP_DECL
-Renderbuffer::~Renderbuffer() noexcept {
+void Renderbuffer::free() noexcept {
 	if(mHandle) {
 		glDeleteRenderbuffers(1, &mHandle);
 	}
 }
+
 
 GLPP_DECL
 Renderbuffer::Renderbuffer(SizedImageFormat fmt, unsigned width, unsigned height) noexcept :
