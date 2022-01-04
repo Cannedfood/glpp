@@ -42,7 +42,7 @@ Framebuffer::~Framebuffer() noexcept { destroy(); }
 
 GLPP_DECL
 Framebuffer::Framebuffer(Framebuffer&& other) noexcept :
-	mHandle(std::exchange(other.mHandle, 0))
+	FramebufferView(std::exchange(other.mHandle, 0))
 {}
 GLPP_DECL
 Framebuffer& Framebuffer::operator=(Framebuffer&& other) noexcept {
@@ -67,40 +67,40 @@ void Framebuffer::destroy() noexcept {
 }
 
 GLPP_DECL
-void Framebuffer::texture(AttachmentType type, unsigned tex, unsigned level) noexcept {
+void FramebufferView::texture(AttachmentType type, unsigned tex, unsigned level) noexcept {
 	glNamedFramebufferTexture(mHandle, type, tex, level);
 }
 GLPP_DECL
-void Framebuffer::texture(AttachmentType type, unsigned tex, CubemapFaceIndex face, unsigned level) noexcept {
+void FramebufferView::texture(AttachmentType type, unsigned tex, CubemapFaceIndex face, unsigned level) noexcept {
 	glNamedFramebufferTextureLayer(mHandle, type, tex, level, face);
 }
 GLPP_DECL
-void Framebuffer::renderbuffer(AttachmentType type, unsigned renderbuffer) noexcept {
+void FramebufferView::renderbuffer(AttachmentType type, unsigned renderbuffer) noexcept {
 	glNamedFramebufferRenderbuffer(mHandle, type, GL_RENDERBUFFER, renderbuffer);
 }
 
 GLPP_DECL
-void Framebuffer::drawBuffers(gl::AttachmentType const* attachments, unsigned n) noexcept {
+void FramebufferView::drawBuffers(gl::AttachmentType const* attachments, unsigned n) noexcept {
 	glNamedFramebufferDrawBuffers(mHandle, n, (GLenum const*)attachments);
 }
 
 GLPP_DECL
-void Framebuffer::bind(FramebufferMode mode) noexcept {
+void FramebufferView::bind(FramebufferMode mode) noexcept {
 	glBindFramebuffer(mode, mHandle);
 }
 
 GLPP_DECL
-void Framebuffer::unbind(FramebufferMode mode) noexcept {
+void FramebufferView::unbind(FramebufferMode mode) noexcept {
 	glBindFramebuffer(mode, 0);
 }
 
 GLPP_DECL
-FramebufferStatus Framebuffer::checkStatus() const noexcept {
+FramebufferStatus FramebufferView::checkStatus() const noexcept {
 	return (FramebufferStatus) glCheckNamedFramebufferStatus(mHandle, GL_FRAMEBUFFER);
 }
 
 GLPP_DECL
-void Framebuffer::assertStatus() const {
+void FramebufferView::assertStatus() const {
 	switch (checkStatus()) {
 	case FRAMEBUFFER_COMPLETE: return;
 	case FRAMEBUFFER_INCOMPLETE_ATTACHMENT:         throw std::runtime_error("FRAMEBUFFER_INCOMPLETE_ATTACHMENT");
@@ -114,7 +114,7 @@ void Framebuffer::assertStatus() const {
 }
 
 GLPP_DECL
-void Framebuffer::debugLabel(std::string_view s) noexcept {
+void FramebufferView::debugLabel(std::string_view s) noexcept {
 	glObjectLabel(GL_FRAMEBUFFER, mHandle, s.size(), s.data());
 }
 

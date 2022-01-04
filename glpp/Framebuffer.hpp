@@ -41,29 +41,13 @@ enum AttachmentType : GLenum {
 	DEPTH_STENCIL_ATTACHMENT = GL_DEPTH_STENCIL_ATTACHMENT
 };
 
-enum CubemapFaceIndex {
-	CUBEMAP_POSITIVE_X_IDX = 0,
-	CUBEMAP_NEGATIVE_X_IDX = 1,
-	CUBEMAP_POSITIVE_Y_IDX = 2,
-	CUBEMAP_NEGATIVE_Y_IDX = 3,
-	CUBEMAP_POSITIVE_Z_IDX = 4,
-	CUBEMAP_NEGATIVE_Z_IDX = 5,
-};
-
-class Framebuffer {
+class FramebufferView {
+protected:
 	unsigned mHandle = 0;
 public:
-	Framebuffer(std::nullptr_t) noexcept;
-	Framebuffer() noexcept;
-	~Framebuffer() noexcept;
+	FramebufferView(unsigned handle = 0) : mHandle(handle) {}
 
-	void init() noexcept;
-	void destroy() noexcept;
-
-	Framebuffer(Framebuffer&& other) noexcept;
-	Framebuffer& operator=(Framebuffer&& other) noexcept;
-	Framebuffer(Framebuffer const& other) noexcept = delete;
-	Framebuffer& operator=(Framebuffer const& other) = delete;
+	static FramebufferView DefaultFramebuffer() noexcept { return {}; }
 
 	void texture(AttachmentType type, unsigned tex, unsigned level = 0) noexcept;
 	void texture(AttachmentType type, unsigned tex, CubemapFaceIndex face, unsigned level = 0) noexcept;
@@ -82,6 +66,21 @@ public:
 	operator unsigned() const noexcept { return mHandle; }
 
 	void debugLabel(std::string_view s) noexcept;
+};
+
+class Framebuffer : public FramebufferView {
+public:
+	Framebuffer(std::nullptr_t) noexcept;
+	Framebuffer() noexcept;
+	~Framebuffer() noexcept;
+
+	void init() noexcept;
+	void destroy() noexcept;
+
+	Framebuffer(Framebuffer&& other) noexcept;
+	Framebuffer& operator=(Framebuffer&& other) noexcept;
+	Framebuffer(Framebuffer const& other) noexcept = delete;
+	Framebuffer& operator=(Framebuffer const& other) = delete;
 };
 
 class Renderbuffer {
