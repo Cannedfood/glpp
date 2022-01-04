@@ -32,4 +32,22 @@ void cullFace(Side side) noexcept {
 	glCullFace(side);
 }
 
+inline
+void viewport(unsigned width, unsigned height) noexcept {
+	glViewport(0, 0, width, height);
+}
+inline
+void viewport(unsigned x, unsigned y, unsigned width, unsigned height) noexcept {
+	glViewport(x, y, width, height);
+}
+
+inline
+void scissor(unsigned width, unsigned height) noexcept {
+	glScissor(0, 0, width, height);
+}
+inline
+void scissor(unsigned x, unsigned y, unsigned width, unsigned height) noexcept {
+	glScissor(x, y, width, height);
+}
+
 } // namespace gl
