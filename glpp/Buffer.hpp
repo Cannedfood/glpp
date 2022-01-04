@@ -73,24 +73,11 @@ enum BufferMappingBits : GLbitfield {
 __GLPP_ENUM_BITFIELD_OPERATORS(BufferMappingBits);
 
 template<BufferType kBufferType>
-class Buffer {
+class BufferView {
+protected:
 	unsigned mHandle = 0;
 public:
-	Buffer() noexcept;
-	~Buffer() noexcept;
-
-	Buffer(std::nullptr_t) noexcept;
-
-	Buffer(BufferUsage usage, size_t bytes, void const* data) noexcept;
-	template<class ContainerT> Buffer(BufferUsage usage, ContainerT const& c) noexcept : Buffer(usage, std::size(c) * sizeof(c[0]), std::data(c)) {}
-
-	Buffer(Buffer&& other) noexcept;
-	Buffer& operator=(Buffer&& other) noexcept;
-	Buffer(Buffer const& other) noexcept = delete;
-	Buffer& operator=(Buffer const& other) noexcept = delete;
-
-	void init() noexcept;
-	void destroy() noexcept;
+	explicit BufferView(unsigned handle = 0) : mHandle(handle) {}
 
 	void bind(BufferType as = kBufferType) noexcept;
 	void unbind(BufferType as = kBufferType) noexcept;
@@ -104,10 +91,10 @@ public:
 	void subdata(size_t offset,     size_t bytes, void const* data) noexcept;
 
 	template<class T> void data(BufferUsage usage, size_t count, T const* pData) noexcept { data(usage, count * sizeof(T), (void const*)pData); }
-	template<class T> void subdata(size_t offset_index, size_t count, T const* pData) noexcept { data(offset_index * sizeof(T), count * sizeof(T), (void const*)pData); }
+	template<class T> void subdata(size_t offset_index, size_t count, T const* pData) noexcept { subdata(offset_index * sizeof(T), count * sizeof(T), (void const*)pData); }
 
 	template<class ContainerT> void data(BufferUsage usage, ContainerT const& c) noexcept { data(usage, std::size(c), std::data(c)); }
-	template<class ContainerT> void subdata(size_t offset_index, ContainerT const& c) noexcept { data(offset_index, std::size(c), std::data(c)); }
+	template<class ContainerT> void subdata(size_t offset_index, ContainerT const& c) noexcept { subdata(offset_index, std::size(c), std::data(c)); }
 
 	// TODO:
 	// glClearBuffer
@@ -138,10 +125,41 @@ public:
 	BufferStorageBits storageFlags() noexcept;
 	BufferUsage       usage()        noexcept;
 
-	operator unsigned() noexcept { return mHandle; }
+	operator unsigned() const noexcept { return mHandle; }
 
 	void debugLabel(std::string_view name) noexcept;
 };
+
+template<BufferType kBufferType>
+class Buffer : public BufferView<kBufferType> {
+public:
+	Buffer() noexcept;
+	~Buffer() noexcept;
+
+	Buffer(std::nullptr_t) noexcept;
+
+	Buffer(BufferUsage usage, size_t bytes, void const* data) noexcept;
+	template<class ContainerT> Buffer(BufferUsage usage, ContainerT const& c) noexcept : Buffer(usage, std::size(c) * sizeof(c[0]), std::data(c)) {}
+	Buffer(BufferStorageBits flags, size_t bytes) noexcept : Buffer() { this->storage(flags, bytes); }
+
+	Buffer(Buffer&& other) noexcept;
+	Buffer& operator=(Buffer&& other) noexcept;
+	Buffer(Buffer const& other) noexcept = delete;
+	Buffer& operator=(Buffer const& other) noexcept = delete;
+
+	void init() noexcept;
+	void destroy() noexcept;
+};
+
+void copyBufferSubdata(
+	GLuint srcBuffer, GLuint dstBuffer,
+	GLintptr srcOffset, GLintptr dstOffset,
+	GLsizeiptr size);
+/// Safe helper function for moving memory withing one buffer. (The normal method doesn't allow overlapping ranges)
+void copyBufferSubdataOverlapping(
+	GLuint buffer,
+	GLintptr srcOffset, GLintptr dstOffset,
+	GLsizeiptr size);
 
 inline namespace buffer_types {
 	using ArrayBuffer             = Buffer<ARRAY_BUFFER>;
