@@ -125,30 +125,33 @@ GLPP_DECL
 void Program::uniform(int at, float f) noexcept {
 	glUniform1f(at, f);
 }
-GLPP_DECL
-void Program::uniform(int at, glm::vec2 const& v) noexcept {
-	glUniform2fv(at, 1, &((float const&)v));
-}
-GLPP_DECL
-void Program::uniform(int at, glm::vec3 const& v) noexcept {
-	glUniform3fv(at, 1, &((float const&)v));
-}
-GLPP_DECL
-void Program::uniform(int at, glm::vec4 const& v) noexcept {
-	glUniform4fv(at, 1, &((float const&)v));
-}
-GLPP_DECL
-void Program::uniform(int at, glm::mat3x3 const& m) noexcept {
-	glUniformMatrix3fv(at, 1, GL_FALSE, &((float const&)m));
-}
-GLPP_DECL
-void Program::uniform(int at, glm::mat4x3 const& m) noexcept {
-	glUniformMatrix4x3fv(at, 1, GL_FALSE, &((float const&)m));
-}
-GLPP_DECL
-void Program::uniform(int at, glm::mat4x4 const& m) noexcept {
-	glUniformMatrix4fv(at, 1, GL_FALSE, &((float const&)m));
-}
+
+#ifdef GLPP_HAS_GLM
+	GLPP_DECL
+	void Program::uniform(int at, glm::vec2 const& v) noexcept {
+		glUniform2fv(at, 1, &((float const&)v));
+	}
+	GLPP_DECL
+	void Program::uniform(int at, glm::vec3 const& v) noexcept {
+		glUniform3fv(at, 1, &((float const&)v));
+	}
+	GLPP_DECL
+	void Program::uniform(int at, glm::vec4 const& v) noexcept {
+		glUniform4fv(at, 1, &((float const&)v));
+	}
+	GLPP_DECL
+	void Program::uniform(int at, glm::mat3x3 const& m) noexcept {
+		glUniformMatrix3fv(at, 1, GL_FALSE, &((float const&)m));
+	}
+	GLPP_DECL
+	void Program::uniform(int at, glm::mat4x3 const& m) noexcept {
+		glUniformMatrix4x3fv(at, 1, GL_FALSE, &((float const&)m));
+	}
+	GLPP_DECL
+	void Program::uniform(int at, glm::mat4x4 const& m) noexcept {
+		glUniformMatrix4fv(at, 1, GL_FALSE, &((float const&)m));
+	}
+#endif // defined(GLPP_HAS_GLM)
 
 GLPP_DECL
 int Program::uniformBlockIndex(const char* name) noexcept {

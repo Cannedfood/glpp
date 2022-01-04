@@ -6,7 +6,10 @@
 
 #include <GL/glew.h>
 
+#if __has_include(<glm/fwd.hpp>)
 #include <glm/fwd.hpp>
+#define GLPP_HAS_GLM
+#endif
 
 namespace gl {
 
@@ -59,14 +62,17 @@ public:
 	void use() const noexcept;
 
 	// Uniforms and stuff
-	int uniformLocation(const char* name) const noexcept;
+	int  uniformLocation(const char* name) const noexcept;
 	void uniform(int at, float f) noexcept;
-	void uniform(int at, glm::vec2 const& v) noexcept;
-	void uniform(int at, glm::vec3 const& v) noexcept;
-	void uniform(int at, glm::vec4 const& v) noexcept;
-	void uniform(int at, glm::mat3x3 const& m) noexcept;
-	void uniform(int at, glm::mat4x3 const& m) noexcept;
-	void uniform(int at, glm::mat4x4 const& m) noexcept;
+	// TODO: non-glm versions of uniforms
+	#ifdef GLPP_HAS_GLM
+		void uniform(int at, glm::vec2 const& v) noexcept;
+		void uniform(int at, glm::vec3 const& v) noexcept;
+		void uniform(int at, glm::vec4 const& v) noexcept;
+		void uniform(int at, glm::mat3x3 const& m) noexcept;
+		void uniform(int at, glm::mat4x3 const& m) noexcept;
+		void uniform(int at, glm::mat4x4 const& m) noexcept;
+	#endif
 
 	template<class Arg0, class... Args>
 	void uniform(const char* name, Arg0&& arg0, Args&&... args) {
