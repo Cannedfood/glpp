@@ -21,7 +21,7 @@
 		{
 			"label": "Generate gl.hpp",
 			"type": "shell",
-			"command": "workspaceFolder=${workspaceFolder} ./.vscode/generate_gl.hpp.sh"
+			"command": "workspaceFolder=${workspaceFolder} ./generate_glpp_hpp.sh"
 		}
 	]
 }
