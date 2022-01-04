@@ -52,7 +52,7 @@ VertexArray& VertexArray::operator=(VertexArray&& other) noexcept {
 }
 
 GLPP_DECL
-void VertexArray::bind() noexcept {
+void VertexArray::bind() const noexcept {
 	glBindVertexArray(mHandle);
 }
 
@@ -85,11 +85,11 @@ void VertexArray::bindAttribute(
 {
 	switch(type) {
 		case INT8: case INT16: case INT32: case UINT8: case UINT16: case UINT32:
-			if(normalize) [[fallthrough]];
-			else {
+			if(!normalize) {
 				glVertexArrayAttribIFormat(mHandle, attribIndex, componentCount, type, relativeOffset);
 				break;
 			}
+			else [[fallthrough]];
 		case FLOAT16: case FLOAT32:
 			glVertexArrayAttribFormat(mHandle, attribIndex, componentCount, type, normalize ? GL_TRUE : GL_FALSE, relativeOffset);
 			break;
@@ -107,6 +107,16 @@ void VertexArray::bindBuffer(
 	size_t stride, size_t offset) noexcept
 {
 	glVertexArrayVertexBuffer(mHandle, bufferBindingIndex, buffer, offset, stride);
+}
+
+GLPP_DECL
+void VertexArray::attribDivisor(GLuint attributeBinding, GLuint divisor) noexcept {
+	glVertexArrayBindingDivisor(mHandle, attributeBinding, divisor);
+}
+GLPP_DECL
+void VertexArray::attribDivisor(std::initializer_list<GLuint> attributeBindings, GLuint divisor) noexcept {
+	for(auto& b : attributeBindings)
+		attribDivisor(b, divisor);
 }
 
 GLPP_DECL

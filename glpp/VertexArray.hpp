@@ -25,7 +25,7 @@ public:
 	VertexArray(VertexArray const& other) noexcept            = delete;
 	VertexArray& operator=(VertexArray const& other) noexcept = delete;
 
-	void bind() noexcept;
+	void bind() const noexcept;
 	static void unbind() noexcept;
 
 	void enableAttrib(GLuint index) noexcept;
@@ -34,7 +34,7 @@ public:
 	/// Binds an index buffer
 	void bindElements(unsigned buffer) noexcept;
 
-	/// Binds a buffer to attribIndex, including format. Can be split into calls to vertexFormat and vertexBuffer
+	/// Binds a buffer to attribIndex, including format. This combines glVertexArrayAttribFormat, glVertexArrayAttribBinding and glEnableVertexArrayAttrib
 	void bindAttribute(
 		GLuint bufferBindingIndex,
 		GLuint attribIndex,
@@ -45,6 +45,8 @@ public:
 		GLuint bufferBindingIndex,
 		unsigned buffer,
 		size_t stride, size_t offset = 0) noexcept;
+	void attribDivisor(GLuint attributeBinding, GLuint divisor) noexcept;
+	void attribDivisor(std::initializer_list<GLuint> attributeBindings, GLuint divisor) noexcept;
 
 	void debugLabel(std::string_view name) noexcept;
 
