@@ -7,7 +7,7 @@
 
 namespace gl {
 
-static std::string LoadFile(std::string path) {
+inline std::string LoadFile(std::string path) {
 	std::ifstream file(path, std::ios::binary | std::ios::ate);
 	if(!file)
 		throw std::runtime_error("Failed opening file " + path);
@@ -19,7 +19,7 @@ static std::string LoadFile(std::string path) {
 	return result;
 }
 
-static gl::ShaderType GuessShaderType(std::string_view path) {
+inline gl::ShaderType GuessShaderType(std::string_view path) {
 	if(path.ends_with(".fs") || path.ends_with(".frag") || path.ends_with(".frag.glsl"))
 		return gl::FRAGMENT_SHADER;
 	if(path.ends_with(".vs") || path.ends_with(".vert") || path.ends_with(".vert.glsl"))
@@ -35,11 +35,11 @@ static gl::ShaderType GuessShaderType(std::string_view path) {
 	throw std::runtime_error("Couldn't guess shader type based on file path for " + std::string(path));
 }
 
-static gl::Shader LoadShader(std::string path, gl::ShaderType type) {
+inline gl::Shader LoadShader(std::string path, gl::ShaderType type) {
 	return gl::Shader(type, LoadFile(path));
 }
 
-static gl::Shader LoadShader(std::string path) {
+inline gl::Shader LoadShader(std::string path) {
 	return LoadShader(path, GuessShaderType(path));
 }
 
