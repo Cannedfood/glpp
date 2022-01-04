@@ -35,13 +35,7 @@ void clear(ClearFlags flag1, Args... args) {
 }
 
 inline
-void drawBuffers(Topography topo) noexcept {
-	// glDrawBuffer(topo);
-}
-
-inline
 void drawElements(Topography topo, BasicType indexType, size_t firstIndex, GLsizei count) noexcept {
-
 	switch(indexType) {
 		case BYTE:  case UNSIGNED_BYTE: break;
 		case SHORT: case UNSIGNED_SHORT: firstIndex *= sizeof(short); break;
