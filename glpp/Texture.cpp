@@ -17,15 +17,12 @@ BasicTexture<type>::~BasicTexture() noexcept {
 
 template<TextureType type> GLPP_DECL
 BasicTexture<type>::BasicTexture(BasicTexture&& other) noexcept  :
-	BasicTextureView<type>(other.mHandle)
-{
-	other.mHandle = 0;
-}
+	BasicTextureView<type>(std::exchange(other.mHandle, 0))
+{}
 template<TextureType type> GLPP_DECL
 BasicTexture<type>& BasicTexture<type>::operator=(BasicTexture&& other) noexcept {
 	destroy();
-	this->mHandle = other.mHandle;
-	other.mHandle = 0;
+	this->mHandle = std::exchange(other.mHandle, 0);
 	return *this;
 }
 
@@ -138,6 +135,20 @@ void BasicTextureView<type>::compressedTexImage(
 	glCompressedTexImage3D(type, level, format, w, h, d, 0, dataSize, data);
 }
 
+template<TextureType type>
+void BasicTextureView<type>::texSubimage(
+	CubemapFaceIndex face,
+	GLsizei level,
+	GLsizei xoff, GLsizei yoff, GLsizei width, GLsizei height,
+	UnsizedImageFormat format, BasicType pxtype, void const* pixels)
+{
+	this->texSubimage(
+		level,
+		xoff, yoff, face,
+		width, height, 1,
+		format, pxtype, pixels
+	);
+}
 template<TextureType type> GLPP_DECL
 void BasicTextureView<type>::texSubimage(
 	GLsizei level,
@@ -177,10 +188,13 @@ void BasicTextureView<type>::texStorage(GLsizei levels, SizedImageFormat interna
 }
 
 template<TextureType type> GLPP_DECL
-void BasicTextureView<type>::bindTextureUnit(unsigned textureUnit) noexcept {
+void BasicTextureView<type>::bindTextureUnit(unsigned textureUnit) const noexcept {
 	glBindTextureUnit(textureUnit, mHandle);
 }
-
+template<TextureType type> GLPP_DECL
+void BasicTextureView<type>::unbindTextureUnit(unsigned textureUnit) noexcept {
+	glBindTextureUnit(textureUnit, 0);
+}
 template<TextureType type> GLPP_DECL
 void BasicTextureView<type>::generateMipmaps() noexcept {
 	glGenerateTextureMipmap(mHandle);

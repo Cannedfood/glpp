@@ -134,6 +134,18 @@ constexpr std::array<CubemapFace, 6> cubemapFaces() noexcept {
 	return { CUBEMAP_POSITIVE_X, CUBEMAP_NEGATIVE_X, CUBEMAP_POSITIVE_Y, CUBEMAP_NEGATIVE_Y, CUBEMAP_POSITIVE_Z, CUBEMAP_NEGATIVE_Z };
 }
 
+enum CubemapFaceIndex {
+	CUBEMAP_POSITIVE_X_IDX = 0,
+	CUBEMAP_NEGATIVE_X_IDX = 1,
+	CUBEMAP_POSITIVE_Y_IDX = 2,
+	CUBEMAP_NEGATIVE_Y_IDX = 3,
+	CUBEMAP_POSITIVE_Z_IDX = 4,
+	CUBEMAP_NEGATIVE_Z_IDX = 5,
+};
+constexpr std::array<CubemapFaceIndex, 6> cubemapFaceIndices() noexcept {
+	return { CUBEMAP_POSITIVE_X_IDX, CUBEMAP_NEGATIVE_X_IDX, CUBEMAP_POSITIVE_Y_IDX, CUBEMAP_NEGATIVE_Y_IDX, CUBEMAP_POSITIVE_Z_IDX, CUBEMAP_NEGATIVE_Z_IDX };
+}
+
 template<TextureType tType>
 class BasicTextureView {
 protected:
@@ -196,6 +208,11 @@ public:
 		const void* data = nullptr);
 
 	void texSubimage(
+		CubemapFaceIndex face,
+		GLsizei level,
+		GLsizei xoff, GLsizei yoff, GLsizei width, GLsizei height,
+		UnsizedImageFormat format, BasicType pxtype, void const* pixels);
+	void texSubimage(
 		GLsizei level,
 		GLsizei xoff, GLsizei width,
 		UnsizedImageFormat format, BasicType pxtype, void const* pixels);
@@ -212,8 +229,9 @@ public:
 	void texStorage(GLsizei levels, SizedImageFormat internalFormat, GLsizei width, GLsizei height) noexcept;
 	void texStorage(GLsizei levels, SizedImageFormat internalFormat, GLsizei width, GLsizei height, GLsizei depth) noexcept;
 
-	void bindTextureUnit(unsigned textureUnit) noexcept; // sampler in glsl
-	// void bindImageUnit(unsigned textureUnit) noexcept; // image in glsl
+	void bindTextureUnit(unsigned textureUnit) const noexcept; // sampler in glsl
+	static void unbindTextureUnit(unsigned textureUnit) noexcept; // sampler in glsl
+	// void bindImageUnit(unsigned textureUnit) const noexcept; // image in glsl
 
 	void generateMipmaps() noexcept;
 
@@ -235,7 +253,7 @@ public:
 	void wrapS(WrapMode) noexcept;
 	void wrapT(WrapMode) noexcept;
 	void wrapR(WrapMode) noexcept;
-	void wrap(WrapMode s, WrapMode t = CLAMP, WrapMode r = CLAMP) noexcept;
+	void wrap(WrapMode s, WrapMode t = CLAMP_TO_EDGE, WrapMode r = CLAMP_TO_EDGE) noexcept;
 	float maxAnisotropy() noexcept;
 	void  maxAnisotropy(float f) noexcept;
 
