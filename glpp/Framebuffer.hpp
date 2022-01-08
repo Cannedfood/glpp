@@ -57,8 +57,8 @@ public:
 	template<size_t N>
 	void drawBuffers(AttachmentType const (& attachments)[N]) noexcept { drawBuffers(std::data(attachments), std::size(attachments)); }
 
-	void bind(FramebufferMode mode = gl::READ_WRITE_FRAMEBUFFER) noexcept;
-	void unbind(FramebufferMode mode = gl::READ_WRITE_FRAMEBUFFER) noexcept;
+	void bind(FramebufferMode mode = gl::READ_WRITE_FRAMEBUFFER) const noexcept;
+	void unbind(FramebufferMode mode = gl::READ_WRITE_FRAMEBUFFER) const noexcept;
 
 	FramebufferStatus checkStatus() const noexcept;
 	void assertStatus() const;

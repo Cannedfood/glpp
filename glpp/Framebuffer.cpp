@@ -85,12 +85,12 @@ void FramebufferView::drawBuffers(gl::AttachmentType const* attachments, unsigne
 }
 
 GLPP_DECL
-void FramebufferView::bind(FramebufferMode mode) noexcept {
+void FramebufferView::bind(FramebufferMode mode) const noexcept {
 	glBindFramebuffer(mode, mHandle);
 }
 
 GLPP_DECL
-void FramebufferView::unbind(FramebufferMode mode) noexcept {
+void FramebufferView::unbind(FramebufferMode mode) const noexcept {
 	glBindFramebuffer(mode, 0);
 }
 
