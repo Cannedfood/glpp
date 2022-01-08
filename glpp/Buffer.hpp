@@ -140,6 +140,7 @@ public:
 
 	Buffer(BufferUsage usage, size_t bytes, void const* data) noexcept;
 	template<class ContainerT> Buffer(BufferUsage usage, ContainerT const& c) noexcept : Buffer(usage, std::size(c) * sizeof(c[0]), std::data(c)) {}
+	template<class T, size_t N> Buffer(BufferUsage usage, T const (&c)[N]) noexcept : Buffer(usage, std::size(c) * sizeof(c[0]), std::data(c)) {}
 	Buffer(BufferStorageBits flags, size_t bytes) noexcept : Buffer() { this->storage(flags, bytes); }
 
 	Buffer(Buffer&& other) noexcept;
