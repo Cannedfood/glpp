@@ -14,10 +14,10 @@ size_t sizeOf(BasicType type) noexcept {
 	case FLOAT16: return 2;
 	case INT16:   return 2;
 	case UINT16:  return 2;
-	case FLOAT32: return 3;
-	case INT32:   return 3;
-	case UINT32:  return 3;
-	case FLOAT64: return 4;
+	case FLOAT32: return 4;
+	case INT32:   return 4;
+	case UINT32:  return 4;
+	case FLOAT64: return 8;
 	};
 }
 

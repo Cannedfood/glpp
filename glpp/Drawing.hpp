@@ -36,18 +36,23 @@ void clear(ClearFlags flag1, Args... args) {
 
 inline
 void drawElements(Topography topo, BasicType indexType, size_t firstIndex, GLsizei count) noexcept {
-	switch(indexType) {
-		case BYTE:  case UNSIGNED_BYTE: break;
-		case SHORT: case UNSIGNED_SHORT: firstIndex *= sizeof(short); break;
-		case INT:   case UNSIGNED_INT: firstIndex *= sizeof(int); break;
-		default: fprintf(stderr, "Unsupported index type"); std::terminate(); break;
-	}
+	firstIndex *= sizeOf(indexType);
 	glDrawElements(topo, count, indexType, (void*)firstIndex);
 }
 
 inline
 void drawElements(Topography topo, BasicType indexType, GLsizei count) noexcept {
 	drawElements(topo, indexType, 0, count);
+}
+
+inline
+void drawElementsInstanced(uint32_t instanceCount, Topography topo, BasicType type, uint32_t firstIndex, uint32_t count) noexcept {
+	glDrawElementsInstanced(topo, count, type, (void*)(firstIndex * sizeOf(type)), instanceCount);
+}
+
+inline
+void drawElementsInstanced(uint32_t instanceCount, Topography topo, BasicType type, uint32_t count) noexcept {
+	drawElementsInstanced(instanceCount, topo, type, 0, count);
 }
 
 inline

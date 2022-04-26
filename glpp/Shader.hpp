@@ -63,27 +63,27 @@ public:
 
 inline namespace shaders {
 
-namespace detail {
+namespace shader_detail {
 
 template<ShaderType kShaderType>
-class SomeShader : public Shader {
+class TypedShader : public Shader {
 public:
-	inline SomeShader() noexcept : Shader(kShaderType) {}
+	inline TypedShader() noexcept : Shader(kShaderType) {}
 	// GLSL
-	explicit inline SomeShader(char    const* source, int len = -1) : Shader(kShaderType, source, len) {}
-	explicit inline SomeShader(std::string_view source) : Shader(kShaderType, source) {}
-	explicit inline SomeShader(std::initializer_list<std::string_view> sources) : Shader(kShaderType, sources) {}
+	explicit inline TypedShader(char    const* source, int len = -1) : Shader(kShaderType, source, len) {}
+	explicit inline TypedShader(std::string_view source) : Shader(kShaderType, source) {}
+	explicit inline TypedShader(std::initializer_list<std::string_view> sources) : Shader(kShaderType, sources) {}
 	// Spirv
-	explicit inline SomeShader(uint8_t const* source, int len) noexcept : Shader(kShaderType, source, len) {}
+	explicit inline TypedShader(uint8_t const* source, int len) noexcept : Shader(kShaderType, source, len) {}
 };
 
 } // namespace detail
 
-using VertexShader       = detail::SomeShader<VERTEX_SHADER>;
-using FragmentShader     = detail::SomeShader<FRAGMENT_SHADER>;
-using GeometryShader     = detail::SomeShader<GEOMETRY_SHADER>;
-using TessControllShader = detail::SomeShader<TESS_CONTROL_SHADER>;
-using TessEvalShader     = detail::SomeShader<TESS_EVALUATION_SHADER>;
+using VertexShader       = shader_detail::TypedShader<VERTEX_SHADER>;
+using FragmentShader     = shader_detail::TypedShader<FRAGMENT_SHADER>;
+using GeometryShader     = shader_detail::TypedShader<GEOMETRY_SHADER>;
+using TessControllShader = shader_detail::TypedShader<TESS_CONTROL_SHADER>;
+using TessEvalShader     = shader_detail::TypedShader<TESS_EVALUATION_SHADER>;
 
 } // inline namespace shaders
 

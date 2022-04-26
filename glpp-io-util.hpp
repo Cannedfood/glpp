@@ -39,6 +39,7 @@ inline gl::Shader LoadShader(std::string path, gl::ShaderType type) {
 	return gl::Shader(type, LoadFile(path));
 }
 
+// TODO: SpirV support
 inline gl::Shader LoadShader(std::string path) {
 	return LoadShader(path, GuessShaderType(path));
 }

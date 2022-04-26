@@ -72,6 +72,17 @@ enum BufferMappingBits : GLbitfield {
 };
 __GLPP_ENUM_BITFIELD_OPERATORS(BufferMappingBits);
 
+namespace detail {
+
+struct BufferUnmapper {
+	unsigned handle;
+	void operator()(void* ptr) noexcept { glUnmapNamedBuffer(handle); }
+};
+template<class T = void>
+using BufferMapping = std::unique_ptr<T, BufferUnmapper>;
+
+} // namespace detail
+
 template<BufferType kBufferType>
 class BufferView {
 protected:
@@ -108,9 +119,9 @@ public:
 
 	void getData(size_t offset, size_t size, void* to) noexcept;
 
-	void* map(BufferAccess access) noexcept;
-	void* map(size_t offset, size_t length, BufferMappingBits access) noexcept;
-	bool  unmap() noexcept;
+	auto map(BufferAccess access) noexcept -> detail::BufferMapping<>;
+	auto map(size_t offset, size_t length, BufferMappingBits access) noexcept -> detail::BufferMapping<>;
+	bool unmap() noexcept;
 
 	void flushMappedRange(size_t offset, size_t length) noexcept;
 

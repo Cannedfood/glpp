@@ -137,13 +137,23 @@ void BufferView<type>::getData(size_t offset, size_t size, void* to) noexcept {
 }
 
 template<BufferType type> GLPP_DECL
-void* BufferView<type>::map(BufferAccess access) noexcept {
-	return glMapNamedBuffer(mHandle, access);
+auto BufferView<type>::map(BufferAccess access) noexcept
+	-> detail::BufferMapping<>
+{
+	return detail::BufferMapping<>(
+		glMapNamedBuffer(mHandle, access),
+		detail::BufferUnmapper { mHandle }
+	);
 }
 
 template<BufferType type> GLPP_DECL
-void* BufferView<type>::map(size_t offset, size_t length, BufferMappingBits access) noexcept {
-	return glMapNamedBufferRange(mHandle, offset, length, access);
+auto BufferView<type>::map(size_t offset, size_t length, BufferMappingBits access) noexcept
+	-> detail::BufferMapping<>
+{
+	return detail::BufferMapping<>(
+		glMapNamedBufferRange(mHandle, offset, length, access),
+		detail::BufferUnmapper { mHandle }
+	);
 }
 
 template<BufferType type> GLPP_DECL
